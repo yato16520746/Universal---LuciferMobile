@@ -16,6 +16,17 @@ public class DetectEnemy : MonoBehaviour
         }
     }
 
+    private void OnTriggerExit(Collider other)
+    {
+        Skeleton skeleton = other.GetComponent<Skeleton>();
+
+        if (skeleton)
+        {
+            _enemyGameObjects.Remove(skeleton.gameObject);
+        }
+    }
+
+    // calculating
     public GameObject Get_Target()
     {
         // no enemy, return null
@@ -38,12 +49,18 @@ public class DetectEnemy : MonoBehaviour
             }
         }
 
+        // no enemy, return null
+        if (_enemyGameObjects.Count <= 0)
+        {
+            return null;
+        }
+
         //  Default = first gameObject
         GameObject target = _enemyGameObjects[0];
         float distance = (transform.position - _enemyGameObjects[0].transform.position).magnitude;
 
         // check gameObject[1..n]
-        for (i = 0; i < _enemyGameObjects.Count; i++)
+        for (i = 1; i < _enemyGameObjects.Count; i++)
         {
             float newDistance = (transform.position - _enemyGameObjects[i].transform.position).magnitude;
 

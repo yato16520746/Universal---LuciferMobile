@@ -6,32 +6,49 @@ public class Player_Run : StateMachineBehaviour
 {
     Player_Delegate _delegate;
 
+    Transform _transform;
+    Rigidbody _rb;
+
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        // get Player_Delegate from animator
+        // lần đầu chạy state
         if (!_delegate)
         {
             _delegate = animator.GetComponent<Player_Delegate>();
+
+            _transform = animator.transform;
+            _rb = _delegate.Rb;
         }
+
+        // set biến kiểm tra State
+        _delegate.State = PlayerState.Run;
     }
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        // get direction from Joystick
-        Vector3 direction = (new Vector3(_delegate.Joystick.Horizontal, 0, _delegate.Joystick.Vertical)).normalized;
-
-        // define the velocity you want
-        Vector3 designedVelocity = direction * _delegate.RunSpeed;
-
-        // apply velocity to move
-        _delegate.Rb.velocity = Vector3.Lerp(_delegate.Rb.velocity, designedVelocity, _delegate.SpeedLerp * Time.deltaTime);
-        Debug.Log(_delegate.Rb.velocity);
-
-        // rotate the player to the right direction
-        if (_delegate.Rb.velocity != Vector3.zero)
+        // kiểm tra xem đã chuyển State hay chưa
+        if (_delegate.State != PlayerState.Run)
         {
-            Quaternion rotation = Quaternion.LookRotation(_delegate.Rb.velocity);
-            animator.transform.rotation = Quaternion.Lerp(animator.transform.rotation, rotation, _delegate.RotateLerp * Time.deltaTime);
+            return;
         }
+
+        // lấy các tham số
+        Vector3 joystickDirection = _delegate.JoystickDirection;
+        float runSpeed = _delegate.RunSpeed;
+        float speedLerp = _delegate.SpeedLerp * Time.deltaTime;
+        float rotateLerp = _delegate.RotateLerp * Time.deltaTime;
+
+        // đưa vận tốc vào => chạy
+        Vector3 velocity = new Vector3(joystickDirection.x * runSpeed, _rb.velocity.y, joystickDirection.z * runSpeed);
+        _rb.velocity = Vector3.Lerp(_rb.velocity, velocity, speedLerp);
+
+        // xoay người theo hướng chạy
+        Vector3 vector = new Vector3(_rb.velocity.x, 0f, _rb.velocity.z);
+        if (vector.magnitude > 0.1f)
+        {
+            Quaternion rotation = Quaternion.LookRotation(vector);
+            _transform.rotation = Quaternion.Lerp(_transform.rotation, rotation, rotateLerp);
+        }
+
     }
 }
