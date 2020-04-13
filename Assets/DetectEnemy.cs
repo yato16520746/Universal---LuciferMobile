@@ -9,10 +9,10 @@ public class DetectEnemy : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         Skeleton skeleton = other.GetComponent<Skeleton>();
-
+        
         if (skeleton)
         {
-            _enemyGameObjects.Add(skeleton.gameObject);
+            _enemyGameObjects.Add(other.gameObject);
         }
     }
 
@@ -22,7 +22,7 @@ public class DetectEnemy : MonoBehaviour
 
         if (skeleton)
         {
-            _enemyGameObjects.Remove(skeleton.gameObject);
+            _enemyGameObjects.Remove(other.gameObject);
         }
     }
 

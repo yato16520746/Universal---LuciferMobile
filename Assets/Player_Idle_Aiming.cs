@@ -37,6 +37,7 @@ public class Player_Idle_Aiming : StateMachineBehaviour
         float speedLerp = _delegate.SpeedLerp * Time.deltaTime;
         float rotateLerp = _delegate.RotateLerp * Time.deltaTime;
         GameObject Target = _delegate.Target;
+        Transform rigPistolRight = _delegate.RigPistolRight;
 
         // đưa vận tốc vào => đứng yên
         Vector3 velocity = new Vector3(0f, _rb.velocity.y, 0f);
@@ -45,7 +46,7 @@ public class Player_Idle_Aiming : StateMachineBehaviour
         if (Target)
         {
             // xoay người về phía về mục tiêu
-            Vector3 vector = Target.transform.position - _transform.position;
+            Vector3 vector = Target.transform.position - rigPistolRight.transform.position;
             vector.y = 0f;
             if (vector.magnitude > 0.1f)
             {

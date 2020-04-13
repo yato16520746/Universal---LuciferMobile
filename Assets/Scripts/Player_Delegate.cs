@@ -64,14 +64,19 @@ public class Player_Delegate : MonoBehaviour
     public float WalkSpeed { get { return _walkSpeed; } }
     
     // tốc độ thay đổi vận tốc
-    [Space]
     [SerializeField] float _speedLerp;
     public float SpeedLerp { get { return _speedLerp; } }
 
     // tốc độ xoay người
-    [Space]
     [SerializeField] float _rotateLerp;
     public float RotateLerp { get { return _rotateLerp; } }
+
+    // bắn đạn
+    [Space]
+    [SerializeField] Transform _rigPistolRight;
+    public Transform RigPistolRight { get { return _rigPistolRight; } }
+    [SerializeField] Transform _shootPoint;
+    [SerializeField] GameObject _bulletPref;
 
     // hàm update
     private void Update()
@@ -112,7 +117,7 @@ public class Player_Delegate : MonoBehaviour
         if (Target)
         {
             // xoay LookingForTarget về phía về mục tiêu
-            Vector3 vector = Target.transform.position - transform.position;
+            Vector3 vector = Target.transform.position - RigPistolRight.transform.position;
             vector.y = 0f;
             if (vector.magnitude > 0.1f)
             {
@@ -130,5 +135,19 @@ public class Player_Delegate : MonoBehaviour
                 _animator.SetFloat("Direction Z", _walkDirection.z);
             }
         }
+        else
+        {
+            _walkDirection = Vector3.Lerp(_walkDirection, new Vector3(0f, 0f, 1f), 5f * Time.deltaTime);
+
+            _animator.SetFloat("Direction X", _walkDirection.x);
+            _animator.SetFloat("Direction Z", _walkDirection.z);
+        }
+    }
+
+    public void ShootBullet()
+    {
+        GameObject bullet = Instantiate(_bulletPref, _shootPoint.position, Quaternion.identity);
+        Bullet bulletScript = bullet.GetComponent<Bullet>();
+        bulletScript.SetDirection(transform.rotation * Vector3.forward);
     }
 }
