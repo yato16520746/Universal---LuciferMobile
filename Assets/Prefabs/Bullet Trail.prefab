@@ -11,8 +11,9 @@ GameObject:
   - component: {fileID: 452640419006958629}
   - component: {fileID: 452640419006958650}
   - component: {fileID: 4722975277931438116}
+  - component: {fileID: 93592433684299876}
   m_Layer: 0
-  m_Name: Trail
+  m_Name: Bullet Trail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -72,10 +73,10 @@ TrailRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Time: 0.1
+  m_Time: 0.05
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 0.2
+    widthMultiplier: 0.12
     widthCurve:
       serializedVersion: 2
       m_Curve:
@@ -136,7 +137,7 @@ TrailRenderer:
     shadowBias: 0.5
     generateLightingData: 0
   m_MinVertexDistance: 0.1
-  m_Autodestruct: 0
+  m_Autodestruct: 1
   m_Emitting: 1
 --- !u!114 &4722975277931438116
 MonoBehaviour:
@@ -150,3 +151,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28059fa0b266d2147b4a3bc4d78e3e41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _speed: 40
+  _range: 20
+  _explosionPref: {fileID: 1171500340767235266, guid: 2f1e7df6f6ced11458936e137e62bff0,
+    type: 3}
+--- !u!114 &93592433684299876
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 452640419006958651}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54cdbf682dacb8847a52a87eb68ec0e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _time: 100

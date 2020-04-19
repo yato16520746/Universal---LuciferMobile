@@ -77,6 +77,7 @@ public class Player_Delegate : MonoBehaviour
     public Transform RigPistolRight { get { return _rigPistolRight; } }
     [SerializeField] Transform _shootPoint;
     [SerializeField] GameObject _bulletPref;
+    [SerializeField] GameObject _shootFXPref;
 
     // hàm update
     private void Update()
@@ -91,8 +92,18 @@ public class Player_Delegate : MonoBehaviour
             _animator.SetBool("Moving", true);
         }
 
-        // set tham số Firing của animation
+        // set tham số Firing của animation: là tham số giữ súng
         _animator.SetBool("Firing", _fireButton.Press);
+
+        // set tham số Fire của animation: là tham số bắn đạn
+        if (State == PlayerState.Idle_Aiming || State == PlayerState.Walk_Aiming)
+        {
+            _animator.SetBool("Fire", true);
+        }
+        else
+        {
+            _animator.SetBool("Fire", false);
+        }
 
         // nếu ấn nút Fire, thì liên tục lấy mục tiêu
         if (_fireButton.Press)
@@ -146,6 +157,17 @@ public class Player_Delegate : MonoBehaviour
 
     public void ShootBullet()
     {
+        // không cho bắn đạn lúc chuyển trạng thái
+        if (State != PlayerState.Idle_Aiming && State != PlayerState.Walk_Aiming)
+        {
+            return;
+        }
+
+        // tạo hiệu ứng lúc ra đạn
+        Instantiate(_shootFXPref, _shootPoint.position, transform.rotation);
+
+
+        // bắn đạn
         GameObject bullet = Instantiate(_bulletPref, _shootPoint.position, Quaternion.identity);
         Bullet bulletScript = bullet.GetComponent<Bullet>();
         bulletScript.SetDirection(transform.rotation * Vector3.forward);
