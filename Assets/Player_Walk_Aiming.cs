@@ -37,14 +37,14 @@ public class Player_Walk_Aiming : StateMachineBehaviour
         float walkSpeed = _delegate.WalkSpeed;
         float speedLerp = _delegate.SpeedLerp * Time.deltaTime;
         float rotateLerp = _delegate.RotateLerp * Time.deltaTime;
-        GameObject Target = _delegate.Target;
+        EnemyHealth Target = _delegate.Target;
         Transform rigPistolRight = _delegate.RigPistolRight;
 
         // đưa vận tốc vào => di chuyển chậm
         Vector3 velocity = new Vector3(joystickDirection.x * walkSpeed, _rb.velocity.y, joystickDirection.z * walkSpeed);
         _rb.velocity = Vector3.Lerp(_rb.velocity, velocity, speedLerp);
-        
-        if (Target)
+
+        if (Target && !Target.IsDead)
         {
             // xoay người về phía về mục tiêu
             Vector3 vector = Target.transform.position - rigPistolRight.transform.position;

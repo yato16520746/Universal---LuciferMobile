@@ -36,9 +36,9 @@ public class Player_Delegate : MonoBehaviour
     [SerializeField] DetectEnemy _detectEnemy;
     public DetectEnemy DetectEnemy { get { return _detectEnemy; } }
 
-    // mục tiêu hiện tại
-    GameObject _target;
-    public GameObject Target { get { return _target; } }
+    // mục tiêu hiện tại - máu của enemy
+    EnemyHealth _target;
+    public EnemyHealth Target { get { return _target; } }
     int _count_GetTarget = 0;
 
     // game object luôn xoay về mục tiêu
@@ -108,7 +108,7 @@ public class Player_Delegate : MonoBehaviour
         // nếu ấn nút Fire, thì liên tục lấy mục tiêu
         if (_fireButton.Press)
         {
-            if (!Target)
+            if (!Target || Target.IsDead)
             {
                 _target = DetectEnemy.Get_Target();
             }    
@@ -125,7 +125,7 @@ public class Player_Delegate : MonoBehaviour
         }
 
 
-        if (Target)
+        if (Target && !Target.IsDead)
         {
             // xoay LookingForTarget về phía về mục tiêu
             Vector3 vector = Target.transform.position - RigPistolRight.transform.position;

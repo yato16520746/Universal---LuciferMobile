@@ -2,46 +2,51 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// lấy các EnemyHealth vào trong tầm
 public class DetectEnemy : MonoBehaviour
 {
-    [SerializeField] List<GameObject> _enemyGameObjects;
+    // singleton
+    static DetectEnemy _instance;
+    public static DetectEnemy Instance { get { return _instance; } }
+
+    // danh sách các EnemyHealth ở gần
+    [SerializeField] List<EnemyHealth> _enemyHealths;
+
+    private void Start()
+    {
+        _instance = this;
+    }
 
     private void OnTriggerEnter(Collider other)
     {
-        Skeleton skeleton = other.GetComponent<Skeleton>();
-        
-        if (skeleton)
+        EnemyHealth enemyHealth = other.GetComponent<EnemyHealth>();
+
+        if (enemyHealth && !enemyHealth.IsDead)
         {
-            _enemyGameObjects.Add(other.gameObject);
+            _enemyHealths.Add(enemyHealth);
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        Skeleton skeleton = other.GetComponent<Skeleton>();
+        EnemyHealth enemyHealth = other.GetComponent<EnemyHealth>();
 
-        if (skeleton)
+        if (enemyHealth && !enemyHealth.IsDead)
         {
-            _enemyGameObjects.Remove(other.gameObject);
+            _enemyHealths.Remove(enemyHealth);
         }
     }
 
     // calculating
-    public GameObject Get_Target()
+    public EnemyHealth Get_Target()
     {
-        // no enemy, return null
-        if (_enemyGameObjects.Count <= 0)
-        {
-            return null;
-        }
-
-        // clear the list - remove null
+        // dọn danh sách - loại bỏ các null hoặc đã dead 
         int i = 0;
-        while (i < _enemyGameObjects.Count)
+        while (i < _enemyHealths.Count)
         {
-            if (_enemyGameObjects[i] == null)
+            if (_enemyHealths[i] == null || _enemyHealths[i].IsDead)
             {
-                _enemyGameObjects.RemoveAt(i);
+                _enemyHealths.RemoveAt(i);
             }
             else
             {
@@ -49,24 +54,24 @@ public class DetectEnemy : MonoBehaviour
             }
         }
 
-        // no enemy, return null
-        if (_enemyGameObjects.Count <= 0)
+        // không có enemy, return
+        if (_enemyHealths.Count <= 0)
         {
             return null;
         }
 
-        //  Default = first gameObject
-        GameObject target = _enemyGameObjects[0];
-        float distance = (transform.position - _enemyGameObjects[0].transform.position).magnitude;
+        // mặc định mục tiêu là enemy đầu tiên
+        EnemyHealth target = _enemyHealths[0];
+        float distance = (transform.position - _enemyHealths[0].transform.position).magnitude;
 
-        // check gameObject[1..n]
-        for (i = 1; i < _enemyGameObjects.Count; i++)
+        // tính toán các enemy còn lại
+        for (i = 1; i < _enemyHealths.Count; i++)
         {
-            float newDistance = (transform.position - _enemyGameObjects[i].transform.position).magnitude;
+            float newDistance = (transform.position - _enemyHealths[i].transform.position).magnitude;
 
-            if (newDistance < distance) // enemy[i] closer than current target
+            if (newDistance < distance) // enemy[i] ở gần hơn enemy hiện tại
             {
-                target = _enemyGameObjects[i];
+                target = _enemyHealths[i];
                 distance = newDistance;
             }
         }

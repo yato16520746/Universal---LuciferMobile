@@ -6,8 +6,6 @@ public class EnemySpawner : MonoBehaviour
 {
     [Space]
     [SerializeField] float _delayTime = 1.25f;
-    float _count = 0;
-    bool _spawn = false;
     Vector3 _position;
 
     [Space]
@@ -16,27 +14,30 @@ public class EnemySpawner : MonoBehaviour
     [Space]
     [SerializeField] GameObject _spawningFX;
 
-    private void Update()
+    private void Start()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            _position = new Vector3(Random.Range(-6, 6), 0, Random.Range(-6, 6));
+        StartCoroutine(SpawnEnemy(Random.Range(1f, 3f)));
+    }
 
-            Instantiate(_spawningFX, _position + new Vector3(0f, 0.1f, 0f), _spawningFX.transform.rotation);
+    IEnumerator SpawnEnemy(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
 
-            _spawn = true;
-        }
+        _position = new Vector3(Random.Range(-6, 6), 0, Random.Range(-6, 6));
 
-        if (_spawn)
-        {
-            _count += Time.deltaTime;
-            if (_count > _delayTime)
-            {
-                _count = 0;
-                _spawn = false;
+        Instantiate(_spawningFX, _position + new Vector3(0f, 0.1f, 0f), _spawningFX.transform.rotation);
 
-                Instantiate(_enemyPref, _position, _enemyPref.transform.rotation);
-            }
-        }
+        // spawn enenmy GO
+        StartCoroutine(SpawnEnemyGO(_delayTime));
+    }
+
+    IEnumerator SpawnEnemyGO(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+
+        Instantiate(_enemyPref, _position, _enemyPref.transform.rotation);
+
+        // spawn enemy again
+        StartCoroutine(SpawnEnemy(Random.Range(2f, 5f)));
     }
 }
