@@ -48,7 +48,7 @@ public class Player_Idle_Aiming : StateMachineBehaviour
             // xoay người về phía về mục tiêu
             Vector3 vector = Target.transform.position - rigPistolRight.transform.position;
             vector.y = 0f;
-            if (vector.magnitude > 0.3f)
+            if (vector.magnitude > 0.1f)
             {
                 Quaternion rotation = Quaternion.LookRotation(vector);
                 _transform.rotation = Quaternion.Lerp(_transform.rotation, rotation, rotateLerp);
@@ -56,9 +56,9 @@ public class Player_Idle_Aiming : StateMachineBehaviour
         }
         else
         {
-            // xoay người theo hướng di chuyển
+            // xoay người theo hướng di chuyển, khi mà vận tốc vẫn chưa đạt 0
             Vector3 vector = new Vector3(_rb.velocity.x, 0f, _rb.velocity.z);
-            if (vector.magnitude > 0.3f)
+            if (vector.magnitude > 0.1f)
             {
                 Quaternion rotation = Quaternion.LookRotation(vector);
                 _transform.rotation = Quaternion.Lerp(_transform.rotation, rotation, rotateLerp);

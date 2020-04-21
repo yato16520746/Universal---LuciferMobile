@@ -7,8 +7,12 @@ public class EnemyHealth : MonoBehaviour
     [SerializeField] Animator _animator;
     [Space]
 
+    [SerializeField] int _maxHealth = 100;
     [SerializeField] int _health = 100;
-    GameObject _parent;
+
+    [Space]
+    [SerializeField] GameObject _parent;
+    [SerializeField] string _enemyName;
 
     public bool IsDead
     {
@@ -23,10 +27,19 @@ public class EnemyHealth : MonoBehaviour
         }
     }
 
-    private void Start()
+#if UNITY_EDITOR
+    private void OnValidate()
     {
         // lấy gameobject sở hữu
         _parent = transform.parent.gameObject;
+
+        _enemyName = _parent.gameObject.name;
+    }
+#endif
+
+    private void Start()
+    {
+        _health = _maxHealth;
     }
 
     private void Update()
@@ -51,13 +64,16 @@ public class EnemyHealth : MonoBehaviour
             _animator.SetBool("Get Hit", true);
         }
 
+        // hiện trên canvas
+        EnemyHealthCanvas.Instance.set_Value(_health, _maxHealth, _enemyName);
+
         // chạy animation death
         if (_health <= 0)
         {
             _animator.SetBool("Dead", true);
             _animator.SetInteger("Dead Type", Random.Range(0, 3));
 
-            gameObject.layer = LayerMask.GetMask("Default");
+            gameObject.layer = LayerMask.GetMask("Default");     
         }
     }
 }
