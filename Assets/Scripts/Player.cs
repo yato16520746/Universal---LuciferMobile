@@ -14,7 +14,12 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void Start()
+    // pistol transform default
+    // -0.06474289   -0.02103081   0.001257472
+    // 0   290   90.00001
+    // 1   1   1
+
+    private void Awake()
     {
         // set singleton for Player
         if (_instance == null)

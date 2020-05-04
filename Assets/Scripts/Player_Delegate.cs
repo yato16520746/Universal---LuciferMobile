@@ -7,7 +7,8 @@ public enum PlayerState
     Idle, 
     Run,
     Idle_Aiming,
-    Walk_Aiming
+    Walk_Aiming,
+    Death
 }
 
 // class chỉ được truy xuất trong nội bộ Player
@@ -171,5 +172,10 @@ public class Player_Delegate : MonoBehaviour
         GameObject bullet = Instantiate(_bulletPref, _shootPoint.position, Quaternion.identity);
         Bullet bulletScript = bullet.GetComponent<Bullet>();
         bulletScript.SetDirection(transform.rotation * Vector3.forward);
+    }
+
+    public void Dead()
+    {
+        State = PlayerState.Death;
     }
 }

@@ -21,16 +21,29 @@ public class Skeleton_Delegate : MonoBehaviour
 
     [SerializeField] GameObject _parent;
 
-    [Space]
-    [SerializeField] float _timeBetweenNavigation = 1f;
-    public float TimeBetweenNavigation { get { return _timeBetweenNavigation; } }
+    [SerializeField] GameObject _enemyDamage;
 
     // trạng thái của Skeleton
-    public SkeletonState State;
+    [HideInInspector] public SkeletonState State;
+
+    private void Start()
+    {
+        DisableDamage();
+    }
 
     // bỏ hàm này vào giây cuối cùng của quái
     public void DestroyMe()
     {
         Destroy(_parent);
+    }
+
+    public void EnableDamage()
+    {
+        _enemyDamage.SetActive(true);
+    }
+
+    public void DisableDamage()
+    {
+        _enemyDamage.SetActive(false);
     }
 }
