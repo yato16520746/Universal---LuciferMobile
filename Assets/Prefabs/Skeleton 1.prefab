@@ -169,8 +169,8 @@ GameObject:
   m_Component:
   - component: {fileID: 326097467433918726}
   - component: {fileID: 326097467433918727}
-  - component: {fileID: 326097467433918724}
   - component: {fileID: 326097467433918725}
+  - component: {fileID: 326097467433918724}
   m_Layer: 0
   m_Name: Skeleton 1
   m_TagString: Untagged
@@ -218,20 +218,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &326097467433918724
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 326097467433918729}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cbc8f495fc878ce42aa7355845b1e101, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _animator: {fileID: 4422752223817019425}
-  _detecPlayerHealth: {fileID: 2102057084}
 --- !u!54 &326097467433918725
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -248,6 +234,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &326097467433918724
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 326097467433918729}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbc8f495fc878ce42aa7355845b1e101, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _animator: {fileID: 4422752223817019425}
+  _detecPlayerHealth: {fileID: 2102057084}
 --- !u!1 &3056091442492375364
 GameObject:
   m_ObjectHideFlags: 0
@@ -296,7 +296,7 @@ MonoBehaviour:
   _maxHealth: 200
   _health: 200
   _parent: {fileID: 326097467433918729}
-  _enemyName: Skeleton A - Sword
+  _enemyName: Skeleton 1
 --- !u!136 &3056091442492375367
 CapsuleCollider:
   m_ObjectHideFlags: 0

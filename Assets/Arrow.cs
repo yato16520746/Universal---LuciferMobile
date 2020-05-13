@@ -17,6 +17,7 @@ public class Arrow : MonoBehaviour
     {
         if (canFly)
             transform.Translate(Vector3.up * _speed * Time.deltaTime);
+
     }
 
     IEnumerator CanFly()
