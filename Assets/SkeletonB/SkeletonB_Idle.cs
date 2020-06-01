@@ -5,6 +5,7 @@ using UnityEngine;
 public class SkeletonB_Idle : StateMachineBehaviour
 {
     SkeletonB_Delegate _delegate;
+    
     [SerializeField] float _minTime;
     [SerializeField] float _maxTime;
     float _count;

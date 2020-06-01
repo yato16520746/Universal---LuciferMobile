@@ -27,6 +27,8 @@ public class SkeletonB_Delegate : MonoBehaviour
     [SerializeField] Transform _parentTransform;
     public Transform ParentTransform { get { return _parentTransform; } }
 
+    [SerializeField] GameObject _warningLine;
+
     [Space]
     // game AI
     [SerializeField] NavMeshAgent _navMeshAgent;
@@ -41,6 +43,7 @@ public class SkeletonB_Delegate : MonoBehaviour
     private void Start()
     {
         DisableArrowGraphic();
+        Event_DisableWarningLine();
     }
 
     // Events
@@ -70,5 +73,15 @@ public class SkeletonB_Delegate : MonoBehaviour
     private void DisableArrowGraphic()
     {
         _arrowGraphic.SetActive(false);
+    }
+
+    void Event_EnableWarningLine()
+    {
+        _warningLine.SetActive(true);
+    }
+
+    void Event_DisableWarningLine()
+    {
+        _warningLine.SetActive(false);
     }
 }

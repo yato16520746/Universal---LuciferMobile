@@ -16,7 +16,7 @@ TagManager:
   - 
   - Environment
   - Collide Environment
-  - Shootable
+  - Enemy Health
   - Player Health
   - 
   - 

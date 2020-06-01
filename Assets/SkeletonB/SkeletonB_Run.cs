@@ -14,7 +14,6 @@ public class SkeletonB_Run : StateMachineBehaviour
 
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        // lần đầu chạy state
         if (!_delegate)
         {
             _delegate = animator.GetComponent<SkeletonB_Delegate>();

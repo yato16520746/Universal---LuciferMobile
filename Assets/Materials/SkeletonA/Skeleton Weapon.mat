@@ -10,7 +10,7 @@ Material:
   m_Name: Skeleton Weapon
   m_Shader: {fileID: -6465566751694194690, guid: 5cc4b312db137ff4c9aad6c15eca1029,
     type: 3}
-  m_ShaderKeywords: 
+  m_ShaderKeywords: _GLOSSINESS_FROM_BASE_ALPHA _SPECULAR_COLOR
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -32,3 +32,17 @@ Material:
     m_Colors:
     - Color_5FEA4642: {r: 15.999998, g: 1.8710716, b: 0, a: 0}
     - Color_9950CB37: {r: 5.2356014, g: 2.2426472, b: 0, a: 1}
+    - _AlbedoColor: {r: 1, g: 1, b: 1, a: 0}
+--- !u!114 &5961696091140133139
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 1

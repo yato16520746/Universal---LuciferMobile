@@ -215,14 +215,14 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: DS_Skeleton_standard
-    second: {fileID: 2100000, guid: 286bfe7af7bc3674b8c59fbc601e9291, type: 2}
+    second: {fileID: 2100000, guid: 815beacb228e5914abc0a862b3aa7138, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: DS_equipment_standard
-    second: {fileID: 2100000, guid: e5e81676514139d4c85683994e6378df, type: 2}
+    second: {fileID: 2100000, guid: 528ff09b397d1d745b7dbb988fc62cef, type: 2}
   materials:
-    materialImportMode: 1
+    materialImportMode: 0
     materialName: 0
     materialSearch: 1
     materialLocation: 0
@@ -248,11 +248,11 @@ ModelImporter:
     extraExposedTransformPaths: []
     extraUserProperties: []
     clipAnimations: []
-    isReadable: 1
+    isReadable: 0
   meshes:
     lODScreenPercentages: []
     globalScale: 1
-    meshCompression: 0
+    meshCompression: 3
     addColliders: 0
     useSRGBMaterialColor: 1
     sortHierarchyByName: 1

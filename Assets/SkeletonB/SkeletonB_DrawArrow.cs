@@ -10,6 +10,9 @@ public class SkeletonB_DrawArrow : StateMachineBehaviour
     Transform _parentTransform;
     [SerializeField] float _rotateSpeed;
 
+    readonly float _timeDelay = 0.8f;
+    float _count;
+
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         if (!_delegate)
@@ -18,6 +21,8 @@ public class SkeletonB_DrawArrow : StateMachineBehaviour
             _shootTransform = _delegate.ShootTransform;
             _parentTransform = _delegate.ParentTransform;
         }
+
+        _count = _timeDelay;
 
         // set biến kiểm tra state
         _delegate.State = SkeletonB_State.DrawArrow;
@@ -30,6 +35,14 @@ public class SkeletonB_DrawArrow : StateMachineBehaviour
         {
             return;
         }
+
+        _count -= Time.deltaTime;
+        if (_count < 0f)
+        {
+            animator.SetTrigger("Shoot");
+            _count = _timeDelay;
+        }
+
 
         Vector3 vector_2 = Player.Instance.transform.position - animator.transform.position;
         vector_2.y = 0f;

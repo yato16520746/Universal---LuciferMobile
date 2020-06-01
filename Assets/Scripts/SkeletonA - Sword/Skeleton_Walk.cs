@@ -7,14 +7,13 @@ public class Skeleton_Walk : StateMachineBehaviour
 {
     Skeleton_Delegate _delegate;
 
+    // game AI
     NavMeshAgent _agent;
-    [SerializeField] float _timeBetweenSetDestination;
+    [SerializeField] float _timeSetDestination;
     float _count;
-    bool _resetPath;
 
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        // lần đầu chạy state
         if (!_delegate)
         {
             _delegate = animator.GetComponent<Skeleton_Delegate>();
@@ -22,9 +21,8 @@ public class Skeleton_Walk : StateMachineBehaviour
         }
 
         _count = 0f;
-        _resetPath = false;
+        _agent.isStopped = false;
 
-        // set biến kiểm tra state
         _delegate.State = SkeletonState.Walk;
     }   
 
@@ -33,10 +31,10 @@ public class Skeleton_Walk : StateMachineBehaviour
         // kiểm tra đã chuyển state hay chưa
         if (_delegate.State != SkeletonState.Walk)
         {
-            if (!_resetPath)
+            // chỉ stop nav 1 lần khi đã không còn ở state này
+            if (!_agent.isStopped)
             {
-                _agent.ResetPath();
-                _resetPath = true;
+                _agent.isStopped = true;
             }
 
             return;
@@ -47,7 +45,7 @@ public class Skeleton_Walk : StateMachineBehaviour
         if (_count < 0f)
         {
             _agent.SetDestination(Player.Instance.transform.position);
-            _count = _timeBetweenSetDestination;
+            _count = _timeSetDestination;
         }
     }
 }

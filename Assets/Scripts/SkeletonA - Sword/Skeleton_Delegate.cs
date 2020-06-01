@@ -5,6 +5,7 @@ using UnityEngine.AI;
 
 public enum SkeletonState
 {
+    PreapareAttak,
     Attack,
     Idle,
     Walk,
@@ -20,30 +21,24 @@ public class Skeleton_Delegate : MonoBehaviour
     public Rigidbody Rb { get { return _rb; } }
 
     [SerializeField] GameObject _parent;
-
-    [SerializeField] GameObject _enemyDamage;
+    public GameObject Parent { get { return _parent; } }
 
     // trạng thái của Skeleton
     [HideInInspector] public SkeletonState State;
 
+    [Space]
+    [Header("Damage Sphere Cast")]
+    [SerializeField] SphereCastDamage _myDamage;
+    public SphereCastDamage MyDamage { get { return _myDamage; } }
+
     private void Start()
     {
-        DisableDamage();
+        MyDamage.gameObject.SetActive(false);
     }
 
     // bỏ hàm này vào giây cuối cùng của quái
     public void DestroyMe()
     {
         Destroy(_parent);
-    }
-
-    public void EnableDamage()
-    {
-        _enemyDamage.SetActive(true);
-    }
-
-    public void DisableDamage()
-    {
-        _enemyDamage.SetActive(false);
     }
 }
