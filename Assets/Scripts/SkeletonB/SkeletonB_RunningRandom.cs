@@ -21,14 +21,17 @@ public class SkeletonB_RunningRandom : StateMachineBehaviour
 
         _agent.isStopped = false;
 
-        Vector3 sourcePosition = Random.insideUnitSphere * 10f;
-        while (sourcePosition.magnitude < 2f)
+        Vector3 randomDirection = Random.insideUnitSphere;
+        float distance = Random.Range(2.5f, 10f);
+        randomDirection.y = 0f;
+        while (randomDirection.magnitude < 0.05f)
         {
-            sourcePosition = Random.insideUnitSphere * 10f;
+            randomDirection.z = 1f;
         }
-        sourcePosition += animator.transform.position;
+        Vector3 randomPosition = randomDirection.normalized * distance;
+
         NavMeshHit hit;
-        NavMesh.SamplePosition(sourcePosition, out hit, 10f, 1);
+        NavMesh.SamplePosition(randomPosition, out hit, 10f, 1);
         _destination = hit.position;
 
         _agent.SetDestination(_destination);
