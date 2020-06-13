@@ -18,17 +18,30 @@ public class Player : MonoBehaviour
     // -0.06474289   -0.02103081   0.001257472
     // 0   290   90.00001
     // 1   1   1
+                                           
 
     private void Awake()
-    {
+    {                                                    
+
         // set singleton for Player
-        if (_instance == null)
-        {
+        if (_instance == null)                   
+
+        {                                      
+
             _instance = this;
         }
-        else
+        else                                             
+
         {
-            Destroy(this.gameObject);
+            Destroy(this.gameObject);                    
+
         }
+    }
+
+
+    private void Start()
+    {
+        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.visible = true;
     }
 }
