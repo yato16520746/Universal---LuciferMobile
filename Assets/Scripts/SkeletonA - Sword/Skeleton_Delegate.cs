@@ -40,5 +40,6 @@ public class Skeleton_Delegate : MonoBehaviour
     public void DestroyMe()
     {
         Destroy(_parent);
+        EnemySpawner.MonsterAmount--;
     }
 }

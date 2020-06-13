@@ -34,6 +34,8 @@ public class Skeleton : MonoBehaviour
         }
 
         _ray = new Ray();
+
+        EnemySpawner.MonsterAmount++;
     }
 
     private void Update()

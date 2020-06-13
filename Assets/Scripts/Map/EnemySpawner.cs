@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
+    public static int MonsterAmount = 0;
+
     [Space]
     [SerializeField] float _delayTime = 1.25f;
     Vector3 _position;
@@ -14,6 +16,11 @@ public class EnemySpawner : MonoBehaviour
 
     [Space]
     [SerializeField] GameObject _spawningFX;
+
+    private void Awake()
+    {
+        MonsterAmount = 0;
+    }
 
     private void Start()
     {
@@ -33,9 +40,13 @@ public class EnemySpawner : MonoBehaviour
     {
         yield return new WaitForSeconds(waitTime);
 
-        _position = new Vector3(Random.Range(-6, 6), 0, Random.Range(-6, 6));
+        if (MonsterAmount < 3)
+        {
 
-        Instantiate(_spawningFX, _position + new Vector3(0f, 0.1f, 0f), _spawningFX.transform.rotation);
+            _position = new Vector3(Random.Range(-6, 6), 0, Random.Range(-6, 6));
+
+            Instantiate(_spawningFX, _position + new Vector3(0f, 0.1f, 0f), _spawningFX.transform.rotation);
+        }
 
         // spawn enenmy GO
         StartCoroutine(SpawnEnemyGO(_delayTime));
@@ -45,7 +56,10 @@ public class EnemySpawner : MonoBehaviour
     {
         yield return new WaitForSeconds(waitTime);
 
-        Instantiate(_enemyPref, _position, _enemyPref.transform.rotation);
+        if (MonsterAmount < 3)
+        {
+            Instantiate(_enemyPref, _position, _enemyPref.transform.rotation);
+        }
 
         // spawn enemy again
         StartCoroutine(SpawnEnemy(Random.Range(2f, 5f)));
