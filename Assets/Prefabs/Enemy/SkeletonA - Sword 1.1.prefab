@@ -46,8 +46,8 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.3
-  m_Speed: 2.2
-  m_Acceleration: 20
+  m_Speed: 4
+  m_Acceleration: 120
   avoidancePriority: 50
   m_AngularSpeed: 120
   m_StoppingDistance: 1.5
@@ -130,7 +130,7 @@ SphereCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6907741157425451993}
-  m_Material: {fileID: 13400000, guid: 7e213c578d8fa044cb2ce73bebbbd6ca, type: 2}
+  m_Material: {fileID: 13400000, guid: 46f7551e170b71c4c90fcebd3393b47a, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -1103,6 +1103,7 @@ MonoBehaviour:
   _navAgent: {fileID: 6907741156952726851}
   _rb: {fileID: 6907741156952726849}
   _parent: {fileID: 6907741156952726861}
+  _myCollider: {fileID: 6907741157425451999}
   State: 0
   _myDamage: {fileID: 8156815974205462842}
 --- !u!1 &7366617568501645277

@@ -25,7 +25,7 @@ public class Skeleton_Attack : StateMachineBehaviour
         _count = _time;
 
         Vector3 direction = _parent.rotation * Vector3.forward;
-        _rb.velocity = direction * 30f;
+        _rb.velocity = direction * 50f;
 
         _rb.isKinematic = false;
 

@@ -34,19 +34,16 @@ public class PlayerHealth : MonoBehaviour
         _HPSlider.value = _currentHP;
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            ChangeHealth(-10);
-        }
-    }
-
-    public void ChangeHealth(int amount)
+    public void AddDamage(int amount)
     {
         if (_currentHP <= 0)
         {
             return;
+        }
+
+        if (amount >= 0)
+        {
+            amount = -amount;
         }
 
         _currentHP += amount;

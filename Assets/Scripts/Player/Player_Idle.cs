@@ -6,37 +6,33 @@ public class Player_Idle : StateMachineBehaviour
 {
     Player_Delegate _delegate;
 
-    Transform _transform;
     Rigidbody _rb;
 
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        // lầm đầu chạy state
         if (!_delegate)
         {
             _delegate = animator.GetComponent<Player_Delegate>();
 
-            _transform = animator.transform;
             _rb = _delegate.Rb;
         }
 
-        // set biến kiểm tra State
         _delegate.State = PlayerState.Idle;
     }
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        // kiểm tra xem đã chuyển State hay chưa
+        // check state
         if (_delegate.State != PlayerState.Idle)
         {
             return;
         }
 
-        // lấy các tham số
+        // get value
         float speedLerp = _delegate.SpeedLerp * Time.deltaTime;
         float rotateLerp = _delegate.RotateLerp * Time.deltaTime;
 
-        // đưa vận tốc vào => đứng yên
+        // velocity
         Vector3 velocity = new Vector3(0f, _rb.velocity.y, 0f);
         _rb.velocity = Vector3.Lerp(_rb.velocity, velocity, speedLerp);
 

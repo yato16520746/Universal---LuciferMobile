@@ -12,7 +12,7 @@ public class EnemyDamage : MonoBehaviour
 
         if (playerHealth)
         {
-            playerHealth.ChangeHealth(-_damage);
+            playerHealth.AddDamage(-_damage);
         }
     }
 

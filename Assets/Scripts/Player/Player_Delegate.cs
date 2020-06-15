@@ -8,95 +8,60 @@ public enum PlayerState
     Run,
     Idle_Aiming,
     Walk_Aiming,
+    DiveForward,
     Death
 }
 
-// class chỉ được truy xuất trong nội bộ Player
 public class Player_Delegate : MonoBehaviour
 {
-    // joystick
-    [SerializeField] Joystick _joystick;
-    public Joystick Joystick { get { return _joystick; } }
-    public Vector3 JoystickDirection
-    {
-        get
-        {
-            return (new Vector3(Joystick.Horizontal, 0f, Joystick.Vertical)).normalized;
-        }
-    }
+    [SerializeField] Player _parent;
+    public Player Parent { get { return _parent; } }
 
-    // rigidbody
     [SerializeField] Rigidbody _rb;
     public Rigidbody Rb { get { return _rb; } }
 
-    // animator
     [SerializeField] Animator _animator;
-    Vector3 _walkDirection;
 
-    // tìm kiếm mục tiêu DetectEnemy
-    [SerializeField] DetectEnemy _detectEnemy;
-    public DetectEnemy DetectEnemy { get { return _detectEnemy; } }
-
-    // mục tiêu hiện tại - máu của enemy
-    EnemyHealth _target;
-    public EnemyHealth Target { get { return _target; } }
-    int _count_GetTarget = 0;
-
-    // game object luôn xoay về mục tiêu
-    [SerializeField] GameObject _lookingForTarget;
-    public GameObject LookingForTarget { get { return _lookingForTarget; } }
-
-    // nút Firing
-    [SerializeField] MyButton _fireButton;
-    public MyButton FireButton { get { return _fireButton; } }
-
-    // các thuộc tính ...
     [Space]
+    [HideInInspector] public PlayerState State;
+    [HideInInspector] public bool SlowDive;
 
-    // state của người chơi, cẩn thận vì nó ở chế độ Public
-    public PlayerState State;
+    [Header("Movement")]
 
-    // tốc độ chạy
-    [SerializeField] float _runSpeed;
+    [SerializeField] float _runSpeed; // 6
     public float RunSpeed { get { return _runSpeed; } }
 
-    // tốc độ di chuyển
-    [SerializeField] float _walkSpeed;
+    [SerializeField] float _walkSpeed; // 3
     public float WalkSpeed { get { return _walkSpeed; } }
+
+    [SerializeField] float _diveSpeed = 10;
+    public float DiveSpeed { get { return _diveSpeed; } }
     
-    // tốc độ thay đổi vận tốc
-    [SerializeField] float _speedLerp;
+    // for change Velocity over time
+    [SerializeField] float _speedLerp; // 20
     public float SpeedLerp { get { return _speedLerp; } }
 
-    // tốc độ xoay người
-    [SerializeField] float _rotateLerp;
+    // for change Quaterniton over time
+    [SerializeField] float _rotateLerp; // 20
     public float RotateLerp { get { return _rotateLerp; } }
 
-    // bắn đạn
-    [Space]
-    [SerializeField] Transform _rigPistolRight;
-    public Transform RigPistolRight { get { return _rigPistolRight; } }
+    [Header("Blend Tree Animation")]
+    [SerializeField] Transform _gunLook;
+    public Transform GunLook { get { return _gunLook; } }
+
+    Vector3 _walkDirection;
+
+    [Header("Shoot bullet")]
+    readonly float _mouseRange = 0.3f;
+    public float MouseRange { get { return _mouseRange; } }
+
     [SerializeField] Transform _shootPoint;
     [SerializeField] GameObject _bulletPref;
     [SerializeField] GameObject _shootFXPref;
 
-    // hàm update
     private void Update()
     {
-        // set tham số Moving của animation
-        if (Joystick.Vertical == 0 && Joystick.Horizontal == 0)
-        {
-            _animator.SetBool("Moving", false);    
-        }
-        else
-        {
-            _animator.SetBool("Moving", true);
-        }
-
-        // set tham số Firing của animation: là tham số giữ súng
-        _animator.SetBool("Firing", _fireButton.Press);
-
-        // set tham số Fire của animation: là tham số bắn đạn
+        // fire
         if (State == PlayerState.Idle_Aiming || State == PlayerState.Walk_Aiming)
         {
             _animator.SetBool("Fire", true);
@@ -105,58 +70,29 @@ public class Player_Delegate : MonoBehaviour
         {
             _animator.SetBool("Fire", false);
         }
-
-        // nếu ấn nút Fire, thì liên tục lấy mục tiêu
-        if (_fireButton.Press)
-        {
-            if (!Target || Target.IsDead)
-            {
-                _target = DetectEnemy.Get_Target();
-            }    
-        }
-        // nếu không ấn nút Fire, lấy mục tiêu theo chu kỳ
-        else
-        {
-            _count_GetTarget++;
-            if (_count_GetTarget > 5)
-            {
-                _count_GetTarget = 0;
-                _target = DetectEnemy.Get_Target();
-            }
-        }
-
-
-        if (Target && !Target.IsDead)
-        {
-            // xoay LookingForTarget về phía về mục tiêu
-            Vector3 vector = Target.transform.position - RigPistolRight.transform.position;
-            vector.y = 0f;
-            if (vector.magnitude > 0.1f)
-            {
-                Quaternion rotation = Quaternion.LookRotation(vector);
-                LookingForTarget.transform.rotation = Quaternion.Lerp(LookingForTarget.transform.rotation, rotation, 20 * Time.deltaTime);
-            }
-
-            // set tham số Walk_Aiming dựa vào Joystick và transform của LookForTarget
-            if (JoystickDirection.magnitude > 0.1f)
-            {
-                Vector3 designedWalkDirection = LookingForTarget.transform.InverseTransformDirection(JoystickDirection);
-                _walkDirection = Vector3.Lerp(_walkDirection, designedWalkDirection, 5f * Time.deltaTime);
-
-                _animator.SetFloat("Direction X", _walkDirection.x);
-                _animator.SetFloat("Direction Z", _walkDirection.z);
-            }
-        }
-        else
-        {
-            _walkDirection = Vector3.Lerp(_walkDirection, new Vector3(0f, 0f, 1f), 5f * Time.deltaTime);
-
-            _animator.SetFloat("Direction X", _walkDirection.x);
-            _animator.SetFloat("Direction Z", _walkDirection.z);
-        }
     }
 
-    public void ShootBullet()
+    private void LateUpdate()
+    {
+        // rotate GunLook
+        Vector3 mousePosition = Parent.MousePosition;
+        Vector3 vector = mousePosition - GunLook.position;
+        vector.y = 0f;
+        if (vector.magnitude > 0.1f)
+        {
+            GunLook.rotation = Quaternion.LookRotation(vector);
+        }
+
+        // set blend tree animation
+        Vector3 moveDirection = Parent.MoveDirection;
+        Vector3 designedWalkDirection = GunLook.InverseTransformDirection(moveDirection);
+        _walkDirection = Vector3.Lerp(_walkDirection, designedWalkDirection, 8f * Time.deltaTime);
+
+        _animator.SetFloat("Direction X", _walkDirection.x);
+        _animator.SetFloat("Direction Z", _walkDirection.z);
+    }
+
+    public void Event_ShootBullet()
     {
         // không cho bắn đạn lúc chuyển trạng thái
         if (State != PlayerState.Idle_Aiming && State != PlayerState.Walk_Aiming)
@@ -167,15 +103,19 @@ public class Player_Delegate : MonoBehaviour
         // tạo hiệu ứng lúc ra đạn
         Instantiate(_shootFXPref, _shootPoint.position, transform.rotation);
 
-
         // bắn đạn
         GameObject bullet = Instantiate(_bulletPref, _shootPoint.position, Quaternion.identity);
         Bullet bulletScript = bullet.GetComponent<Bullet>();
         bulletScript.SetDirection(transform.rotation * Vector3.forward);
     }
 
-    public void Dead()
+    public void Event_Dead()
     {
         State = PlayerState.Death;
+    }
+
+    public void Event_SlowDive()
+    {
+        SlowDive = true;
     }
 }

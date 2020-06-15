@@ -23,6 +23,9 @@ public class Skeleton_Delegate : MonoBehaviour
     [SerializeField] GameObject _parent;
     public GameObject Parent { get { return _parent; } }
 
+    [SerializeField] Collider _myCollider;
+    public Collider MyCollider { get { return _myCollider; } }
+
     // trạng thái của Skeleton
     [HideInInspector] public SkeletonState State;
 
