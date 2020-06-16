@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Arrow
-  m_Shader: {fileID: -6465566751694194690, guid: 5cc4b312db137ff4c9aad6c15eca1029,
+  m_Shader: {fileID: -6465566751694194690, guid: e514556ecf9dcfb46be1fa0960a661df,
     type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
@@ -101,6 +101,7 @@ Material:
     m_Colors:
     - Color_5FEA4642: {r: 15.999998, g: 1.8710716, b: 0, a: 0}
     - Color_9950CB37: {r: 5.2356014, g: 2.2426472, b: 0, a: 1}
+    - _AlbedoColor: {r: 1.0592737, g: 1.0592737, b: 1.0592737, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}

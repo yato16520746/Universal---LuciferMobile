@@ -86,7 +86,7 @@ public class Player_Delegate : MonoBehaviour
         // set blend tree animation
         Vector3 moveDirection = Parent.MoveDirection;
         Vector3 designedWalkDirection = GunLook.InverseTransformDirection(moveDirection);
-        _walkDirection = Vector3.Lerp(_walkDirection, designedWalkDirection, 8f * Time.deltaTime);
+        _walkDirection = Vector3.Lerp(_walkDirection, designedWalkDirection, 5f * Time.deltaTime);
 
         _animator.SetFloat("Direction X", _walkDirection.x);
         _animator.SetFloat("Direction Z", _walkDirection.z);

@@ -14,6 +14,10 @@ public class EnemyHealth : MonoBehaviour
     [SerializeField] GameObject _parent;
     [SerializeField] string _enemyName;
 
+    [Header("On Animation")]
+    [SerializeField] int _deadTypeCount = 3;
+    [SerializeField] bool _useDeadTrigger = false;
+
     public bool IsDead
     {
         get
@@ -44,8 +48,7 @@ public class EnemyHealth : MonoBehaviour
 
     private void Update()
     {
-        if (_animator)
-            _animator.SetBool("Get Hit", false);
+  
     }
 
     public void AddDamage(int amount)
@@ -61,7 +64,7 @@ public class EnemyHealth : MonoBehaviour
         // chạy animation nhấp nháy
         if (_animator)
         {
-            _animator.SetBool("Get Hit", true);
+            _animator.SetTrigger("Get Hit");
         }
 
         // hiện trên canvas
@@ -70,8 +73,16 @@ public class EnemyHealth : MonoBehaviour
         // chạy animation death
         if (_health <= 0)
         {
-            _animator.SetBool("Dead", true);
-            _animator.SetInteger("Dead Type", Random.Range(0, 3));
+            if (_useDeadTrigger)
+            {
+                _animator.SetTrigger("Dead");
+            }
+            else
+            {
+                _animator.SetBool("Dead", true);
+            }
+   
+            _animator.SetInteger("Dead Type", Random.Range(0, _deadTypeCount));
 
             gameObject.layer = LayerMask.GetMask("Default");     
         }

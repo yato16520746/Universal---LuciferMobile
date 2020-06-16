@@ -76,6 +76,10 @@ public class Bullet : MonoBehaviour
     public void SetDirection(Vector3 direction) 
     {
         _direction = direction.normalized;
+        Vector3 random = Random.insideUnitSphere;
+        random.y = 0f;
+        _direction += random * 0.05f;
+        _direction = _direction.normalized;
     }
 
     IEnumerator SpawnExplosion(Vector3 position, float waitTime)
