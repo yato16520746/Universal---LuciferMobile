@@ -44,7 +44,7 @@ public class Player_Run : StateMachineBehaviour
 
         // rotate
         Vector3 vector = new Vector3(_rb.velocity.x, 0f, _rb.velocity.z);
-        if (vector.magnitude > 0.1f)
+        if (vector.magnitude > 0.3f)
         {
             Quaternion rotation = Quaternion.LookRotation(vector);
             _parentTransform.rotation = Quaternion.Lerp(_parentTransform.rotation, rotation, rotateLerp);
