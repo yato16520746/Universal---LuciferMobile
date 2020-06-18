@@ -7,16 +7,17 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: BigCircle
-  m_Shader: {fileID: -6465566751694194690, guid: 2c20fe20899259840809bec07d6a37b0,
-    type: 3}
-  m_ShaderKeywords: _GLOSSINESS_FROM_BASE_ALPHA _SPECULAR_COLOR
+  m_Name: magic ring
+  m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
+  m_ShaderKeywords: _SPECULARHIGHLIGHTS_OFF
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
+  m_CustomRenderQueue: 3000
+  stringTagMap:
+    RenderType: Transparent
+  disabledShaderPasses:
+  - SHADOWCASTER
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -131,8 +132,9 @@ Material:
     - _Cull: 2
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
-    - _DstBlend: 0
+    - _DstBlend: 10
     - _EnableExternalAlpha: 0
+    - _EnvironmentReflections: 1
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossinessSource: 0
@@ -150,10 +152,11 @@ Material:
     - _SmoothnessTextureChannel: 0
     - _SpecSource: 0
     - _SpecularHighlights: 0
-    - _SrcBlend: 1
-    - _Surface: 0
+    - _SrcBlend: 5
+    - _Surface: 1
     - _UVSec: 0
-    - _ZWrite: 1
+    - _WorkflowMode: 1
+    - _ZWrite: 0
     m_Colors:
     - Color_14D976F3: {r: 0.41189036, g: 0.9541107, b: 0.9811321, a: 0}
     - Color_1BA42039: {r: 1, g: 0.4266065, b: 0, a: 0}
@@ -170,7 +173,7 @@ Material:
     - Vector2_8AE76415: {r: 0, g: 0.2, b: 0, a: 0}
     - Vector2_F97DDBC8: {r: 1, g: 3, b: 0, a: 0}
     - _AlbedoColor: {r: 10.415687, g: 1.8196079, b: 0, a: 0}
-    - _BaseColor: {r: 1, g: 1, b: 1, a: 0}
+    - _BaseColor: {r: 0.6681648, g: 0.99056584, b: 0.990566, a: 1}
     - _Color: {r: 0.50770044, g: 0, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}

@@ -30,9 +30,9 @@ public class EnemySpawner : MonoBehaviour
     private void Update()
     {
         _timeSpawn -= 0.2f* Time.deltaTime;
-        if (_timeSpawn < 2f)
+        if (_timeSpawn < 1.5f)
         {
-            _timeSpawn = 2f;
+            _timeSpawn = 1.5f;
         }
     }
 
