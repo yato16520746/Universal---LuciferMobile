@@ -15,13 +15,13 @@ TagManager:
   - 
   - 
   - Environment
-  - Collide Environment
+  - Collide Player
   - Enemy Health
   - Player Health
   - Mouse
-  - 
-  - 
-  - 
+  - Kinematic
+  - Enemy Normal
+  - Normal
   - 
   - 
   - 

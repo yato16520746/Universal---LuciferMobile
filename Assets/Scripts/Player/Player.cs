@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Player : MonoBehaviour
 {
@@ -13,6 +14,9 @@ public class Player : MonoBehaviour
     // movement
     Vector3 _moveDirection;
     public Vector3 MoveDirection { get { return _moveDirection; } }
+
+    [SerializeField] Rigidbody _rb;
+    public Vector3 RbVelocity { get { return _rb.velocity; } }
 
     float threshold = 0f;
 
@@ -135,5 +139,17 @@ public class Player : MonoBehaviour
         _animator.SetBool("Dive Forward", dive);
 
 
+    }
+
+    public Vector3 RandomPositionNearMe(float radius)
+    {
+        Vector3 direction = Random.insideUnitSphere;
+        direction.y = 0f;
+        Vector3 position = transform.position + direction.normalized * radius;
+
+        NavMeshHit hit;
+        NavMesh.SamplePosition(position, out hit, radius, 1);
+
+        return hit.position;
     }
 }

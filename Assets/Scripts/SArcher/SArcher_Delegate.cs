@@ -16,6 +16,7 @@ public enum SArcherState
 
 public class SArcher_Delegate : MonoBehaviour
 {
+
     [Header("Shoot Arrow")]
     [SerializeField] Transform _arrowTransform;
     [SerializeField] GameObject _arrowPref;
