@@ -39,7 +39,7 @@ public class MapEditor : MonoBehaviour
                 {
                     go.SetActive(false);
                 }
-                _planeGround.SetActive(false);
+                //_planeGround.SetActive(false);
                 break;
 
             case EditorMode.NavigationAI:
@@ -52,7 +52,7 @@ public class MapEditor : MonoBehaviour
                 {
                     go.SetActive(true);
                 }
-                _planeGround.SetActive(false);
+                //_planeGround.SetActive(false);
                 break;
 
             case EditorMode.GameOn:
@@ -65,7 +65,7 @@ public class MapEditor : MonoBehaviour
                 {
                     go.SetActive(false);
                 }
-                _planeGround.SetActive(true);
+                //_planeGround.SetActive(true);
                 
                 break;
         }
