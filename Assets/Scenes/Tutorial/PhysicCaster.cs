@@ -11,19 +11,7 @@ public class PhysicCaster : MonoBehaviour
         Phere
     }
 
-    [SerializeField] CasterType _castertype;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    [SerializeField] CasterType _castertype;    
 
     private void OnDrawGizmos()
     {

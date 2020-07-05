@@ -7,7 +7,9 @@ public class GameSetting : MonoBehaviour
 {
     // singleton
     static GameSetting _instance;
-    public static GameSetting Instance { get { return _instance; } } 
+    public static GameSetting Instance { get { return _instance; } }
+
+    static public readonly int SlowestFPS = 40;
 
     void Start()
     {   

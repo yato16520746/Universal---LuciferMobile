@@ -13,6 +13,7 @@ public class PaladinGroup : MonoBehaviour
 
     private void Start()
     {
+        _statueAnimator.gameObject.SetActive(true);
         _paladin.SetActive(false);
     }
 

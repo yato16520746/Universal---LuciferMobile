@@ -52,12 +52,21 @@ public class Player_Delegate : MonoBehaviour
     Vector3 _walkDirection;
 
     [Header("Shoot bullet")]
+    [SerializeField] ObjectPool _bulletPool;
+
     readonly float _mouseRange = 0.3f;
     public float MouseRange { get { return _mouseRange; } }
 
     [SerializeField] Transform _shootPoint;
-    [SerializeField] GameObject _bulletPref;
-    [SerializeField] GameObject _shootFXPref;
+
+    [Space]
+    [SerializeField] PlayerStamina _stamina;
+    public PlayerStamina Stamina { get { return _stamina; } }
+
+    [Header("Audio")]
+    [SerializeField] AudioSource _audioSource;
+    [SerializeField] AudioClip _diveForwardClip;
+
 
     private void Update()
     {
@@ -101,12 +110,13 @@ public class Player_Delegate : MonoBehaviour
         }
 
         // tạo hiệu ứng lúc ra đạn
-        Instantiate(_shootFXPref, _shootPoint.position, transform.rotation);
+        //Instantiate(_shootFXPref, _shootPoint.position, transform.rotation);
 
         // bắn đạn
-        GameObject bullet = Instantiate(_bulletPref, _shootPoint.position, Quaternion.identity);
-        Bullet bulletScript = bullet.GetComponent<Bullet>();
-        bulletScript.SetDirection(transform.rotation * Vector3.forward);
+        GameObject bullet = _bulletPool.Spawn(_shootPoint.position, transform.rotation);
+        _stamina.Shoot();
+
+        _animator.SetBool("Cannot Stop Fire", false);
     }
 
     public void Event_Dead()
@@ -117,5 +127,20 @@ public class Player_Delegate : MonoBehaviour
     public void Event_SlowDive()
     {
         SlowDive = true;
+    }
+
+    public void Event_CheckMouseError()
+    {
+        // Mouse Input
+        bool fire = Input.GetMouseButton(0);
+        if (fire && !_stamina.CanShoot)
+        {
+            Parent.PlayErrorAudio();
+        }
+    }
+
+    void Event_DiveAudio()
+    {
+        _audioSource.PlayOneShot(_diveForwardClip, 0.4f);
     }
 }

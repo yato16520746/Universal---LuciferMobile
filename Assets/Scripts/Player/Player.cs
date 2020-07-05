@@ -20,6 +20,8 @@ public class Player : MonoBehaviour
 
     float threshold = 0f;
 
+    [SerializeField] PlayerStamina _stamina;
+
     [Header("Mouse input")]
     [SerializeField] float _rangeMouse = 30f;
     [SerializeField] LayerMask _mouseMask;
@@ -34,6 +36,9 @@ public class Player : MonoBehaviour
     [SerializeField] CursorMode cursorMode = CursorMode.Auto;
     [SerializeField] Vector2 _hotSpot = Vector2.zero;
 
+    [Header("Audio")]
+    [SerializeField] AudioSource _audioSource;
+    [SerializeField] AudioClip _errorClip;
 
     // pistol transform default
     // -0.06474289   -0.02103081   0.001257472
@@ -124,9 +129,7 @@ public class Player : MonoBehaviour
             //_animator.SetBool("Moving", false);
         }
 
-        // Mouse Input
-        bool fire = Input.GetMouseButton(0);
-        _animator.SetBool("Firing", fire);
+
 
         _mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(_mouseRay, out _mouseHit, _rangeMouse, _mouseMask))
@@ -136,9 +139,37 @@ public class Player : MonoBehaviour
 
         // dive forward input
         bool dive = Input.GetKeyDown(KeyCode.Space);
-        _animator.SetBool("Dive Forward", dive);
+        if (dive && _stamina.CanDive)
+        {
+            _animator.SetBool("Dive Forward", true);
+        }
+        else
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                _audioSource.PlayOneShot(_errorClip);
+            }
+            _animator.SetBool("Dive Forward", false);
+        }
+    }
 
-
+    private void LateUpdate()
+    {
+        // Mouse Input
+        bool fire = Input.GetMouseButton(0);
+        if (fire && _stamina.CanShoot)
+        {
+            _animator.SetBool("Firing", true);
+            _animator.SetBool("Cannot Stop Fire", true);
+        }
+        else
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                _audioSource.PlayOneShot(_errorClip);
+            }
+            _animator.SetBool("Firing", false);
+        }
     }
 
     public Vector3 RandomPositionNearMe(float radius)
@@ -151,5 +182,10 @@ public class Player : MonoBehaviour
         NavMesh.SamplePosition(position, out hit, radius, 1);
 
         return hit.position;
+    }
+
+    public void PlayErrorAudio()
+    {
+        _audioSource.PlayOneShot(_errorClip);
     }
 }

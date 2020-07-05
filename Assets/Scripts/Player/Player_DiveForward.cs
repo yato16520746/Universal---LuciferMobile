@@ -34,6 +34,8 @@ public class Player_DiveForward : StateMachineBehaviour
             _direction = _parentTransform.rotation * Vector3.forward;
         }
 
+        _delegate.Stamina.Dive();
+
         _delegate.SlowDive = false;
 
         _delegate.State = PlayerState.DiveForward;
