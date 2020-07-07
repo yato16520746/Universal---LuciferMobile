@@ -9,6 +9,7 @@ public enum PlayerState
     Idle_Aiming,
     Walk_Aiming,
     DiveForward,
+    LargeHit,
     Death
 }
 
@@ -36,12 +37,16 @@ public class Player_Delegate : MonoBehaviour
 
     [SerializeField] float _diveSpeed = 10;
     public float DiveSpeed { get { return _diveSpeed; } }
-    
-    // for change Velocity over time
+
+    [SerializeField] float _hitForce = 10f;
+    public float HitForce { get { return _hitForce; } }
+    [HideInInspector] public Vector3 HitForceDirection;
+
+    // for velocity
     [SerializeField] float _speedLerp; // 20
     public float SpeedLerp { get { return _speedLerp; } }
 
-    // for change Quaterniton over time
+    // for quaternion
     [SerializeField] float _rotateLerp; // 20
     public float RotateLerp { get { return _rotateLerp; } }
 

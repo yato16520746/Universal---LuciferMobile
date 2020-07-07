@@ -23,7 +23,8 @@ public class Paladin_Walk : StateMachineBehaviour
         }
 
         _count = 0f;
-        _agent.speed = _delegate.MoveSpeed;
+        _agent.speed = _delegate.WalkSpeed;
+        //_delegate.Event_TurnOnAgentRotate();
 
         _delegate.CheckAttack1.gameObject.SetActive(true);
 
@@ -34,6 +35,9 @@ public class Paladin_Walk : StateMachineBehaviour
     {
         if (_delegate.State != Paladin_State.Walk)
         {
+            _delegate.CheckAttack1.gameObject.SetActive(false);
+            ////_delegate.Event_TurnOffAgentRotate();
+
             return;
         }
 
@@ -42,12 +46,6 @@ public class Paladin_Walk : StateMachineBehaviour
         {
             _agent.SetDestination(_player.transform.position);
             _count = _timeSetDestination;
-        }
-
-        if (_delegate.CheckAttack1.HitTarget)
-        {
-            animator.SetTrigger("Attack 1");
-            _delegate.CheckAttack1.gameObject.SetActive(false);
         }
     }
 }

@@ -39,7 +39,7 @@ public class PlayerBullet : MonoBehaviour
         _begin = true;
 
         StartCoroutine(StopMovingAfter(TimeMoving));
-        StartCoroutine(StopCastDamageAfter(TimeMoving - (1 / 40f)));
+        StartCoroutine(StopCastDamageAfter(TimeMoving - (1 / 50f)));
     }
 
     private void Update()
@@ -95,13 +95,13 @@ public class PlayerBullet : MonoBehaviour
 
     void CastingDamage()
     {
-        float _distance = _speed * (1 / 40f);
+        float _distance = _speed * (1 / 50f);
 
         bool hitSomething = Physics.SphereCast(transform.position, _radius, transform.forward, out _hit, _distance, _shootableMask);
         if (hitSomething)
         {
             Vector3 destination = _hit.point;
-            float waitTime = (destination - transform.position).magnitude / _speed;
+            float waitTime = 0; /*(destination - transform.position).magnitude / _speed;*/
 
             // explode after
             StartCoroutine(Explode(destination, waitTime));

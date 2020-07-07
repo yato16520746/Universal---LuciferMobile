@@ -67,7 +67,7 @@ public class Arrow : MonoBehaviour
         _animator.SetTrigger("Destroy");
         if (_hitPlayerHealth)
         {
-            _hitPlayerHealth.AddDamage(-20);
+            _hitPlayerHealth.AddDamage(-20, transform.position);
         }
 
         Instantiate(_explosionPref, _checkPoint.position, Quaternion.identity);

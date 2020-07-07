@@ -17,13 +17,13 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] int _maxHP = 100;
     int _currentHP;
 
+    [SerializeField] Player_Delegate _delegate;
     [SerializeField] Animator _animator;
     bool _allowHitAnimation; 
 
     public bool IsDead { get { return (_currentHP <= 0); } }
 
-   
-
+  
     private void Start()
     {
         _instance = this;
@@ -34,7 +34,7 @@ public class PlayerHealth : MonoBehaviour
         _HPSlider.value = _currentHP;
     }
 
-    public void AddDamage(int amount)
+    public void AddDamage(int amount, Vector3 damagePosition)
     {
         if (_currentHP <= 0)
         {
@@ -59,13 +59,22 @@ public class PlayerHealth : MonoBehaviour
 
         _HPSlider.value = _currentHP;
 
-        _animator.SetTrigger(Hit_Trigger);
-        _animator.SetInteger(HitType_Int, Random.Range(0, 3));
 
         // death animation
         if (_currentHP <= 0)
         {
             _animator.SetTrigger(Dead_Trigger);
+        }
+        else
+        // hit animation
+        {
+            _animator.SetTrigger(Hit_Trigger);
+            _animator.SetInteger(HitType_Int, Random.Range(0, 3));
+
+            // direction
+            Vector3 direction = transform.position - damagePosition;
+            direction.y = 0f;
+            _delegate.HitForceDirection = direction.normalized;
         }
     }
 }

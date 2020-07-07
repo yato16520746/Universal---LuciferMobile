@@ -1,36 +1,56 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Paladin_Attack1 : StateMachineBehaviour
 {
-    // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
-    //override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{
-    //    
-    //}
+    Paladin_Delegate _delegate;
 
-    // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
-    //override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{
-    //    
-    //}
+    NavMeshAgent _agent;
+    Player _player;
 
-    // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
-    //override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{
-    //    
-    //}
+    override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    {
+        if (!_delegate)
+        {
+            _delegate = animator.GetComponent<Paladin_Delegate>();
 
-    // OnStateMove is called right after Animator.OnAnimatorMove()
-    //override public void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{
-    //    // Implement code that processes and affects root motion
-    //}
+            _agent = _delegate.Agent;
+            _player = Player.Instance;
+        }
 
-    // OnStateIK is called right after Animator.OnAnimatorIK()
-    //override public void OnStateIK(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{
-    //    // Implement code that sets up animation IK (inverse kinematics)
-    //}
+        _delegate.Event_setStateSpeed(_delegate.Attack1_MoveSpeed);
+        _delegate.StopMoving_Attack1 = false;
+
+        //_delegate.Event_TurnOffAgentRotate();
+
+        _delegate.State = Paladin_State.Attack1;
+    }
+
+    override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    {
+        if (_delegate.State != Paladin_State.Attack1)
+        {
+            return;
+        }
+
+        float rotateLerp = _delegate.RotateLerp * Time.deltaTime;
+
+        _agent.speed = _delegate.StateSpeed;
+
+        if (!_delegate.StopMoving_Attack1)
+        {
+            _agent.SetDestination(_player.transform.position);
+
+            // looking player
+            Vector3 vector = Player.Instance.transform.position - animator.transform.position;
+            vector.y = 0f;
+            if (vector.magnitude > 0.0001f)
+            {
+                Quaternion rotation = Quaternion.LookRotation(vector);
+                _agent.transform.rotation = Quaternion.Lerp(_agent.transform.rotation, rotation, rotateLerp);
+            }
+        }
+    }
 }

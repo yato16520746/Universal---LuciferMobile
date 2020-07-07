@@ -6,6 +6,7 @@ using TMPro;
 public class FPSSetting : MonoBehaviour
 {
     [SerializeField] int _fps = 60;
+    [SerializeField] bool _forceFPS;
     [SerializeField] bool _checkFps = true;
     [SerializeField] TextMeshProUGUI _textMeshPro;
     private float _frequency = 1.0f;
@@ -15,7 +16,11 @@ public class FPSSetting : MonoBehaviour
     void Start()
     {
 
-        Application.targetFrameRate = _fps;
+        if (_forceFPS)
+        {
+            Application.targetFrameRate = _fps;
+        }
+
         if (_checkFps)
         {
             StartCoroutine(CheckFPS());

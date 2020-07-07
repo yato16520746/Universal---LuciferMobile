@@ -458,7 +458,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2984c2d57bde2ed4bbf34f14d47f8f1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _timeSetDestination: 0.4
+  _timeSetDestination: 0.3
 --- !u!1101 &5559489148523402663
 AnimatorStateTransition:
   m_ObjectHideFlags: 1

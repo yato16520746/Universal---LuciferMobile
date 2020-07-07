@@ -4,19 +4,18 @@ using UnityEngine;
 
 public class SphereCastDamage : MonoBehaviour
 {
+    public int Damage = 10;
     [SerializeField] LayerMask _mask;
     [SerializeField] float _radius = 0.2f;
     [SerializeField] float _distance;
+    [SerializeField] Transform _owner;
 
-    private void Start()
-    {
-
-    }
+    [SerializeField] bool _debug = true;
 
     void Update()
     {
         RaycastHit hit;
-        Vector3 position = transform.position + Vector3.up;
+        Vector3 position = transform.position;
         bool isHit = Physics.SphereCast(position, _radius, transform.forward, out hit, _distance, _mask);
 
         if (isHit)
@@ -24,18 +23,24 @@ public class SphereCastDamage : MonoBehaviour
             PlayerHealth playerHealth = hit.collider.GetComponent<PlayerHealth>();
             if (playerHealth)
             {
-                playerHealth.AddDamage(-10);
+                playerHealth.AddDamage(-Damage, _owner.position);
+                gameObject.SetActive(false);
             }
 
-            gameObject.SetActive(false);
+        
         }
     }
 
 #if UNITY_EDITOR
     private void OnDrawGizmos()
     {
+        if (!_debug)
+        {
+            return;
+        }
+
         RaycastHit hit;
-        Vector3 position = transform.position + Vector3.up;
+        Vector3 position = transform.position;
         bool isHit = Physics.SphereCast(position, _radius, transform.forward, out hit, _distance, _mask);
 
         if (isHit)
