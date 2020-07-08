@@ -36,7 +36,7 @@ public class Paladin_Attack1 : StateMachineBehaviour
         }
 
         float rotateLerp = _delegate.RotateLerp * Time.deltaTime;
-
+        
         _agent.speed = _delegate.StateSpeed;
 
         if (!_delegate.StopMoving_Attack1)

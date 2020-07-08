@@ -7,14 +7,17 @@ public enum Paladin_State
 {
     Idle,
     Walk,
-    Attack1
+    Attack1,
+    Attack2
 }
 
 public class Paladin_Delegate : MonoBehaviour
 {
     [Header("AI movement")]
     [SerializeField] NavMeshAgent _agent;
-    public NavMeshAgent Agent { get { return _agent; } } 
+    public NavMeshAgent Agent { get { return _agent; } }
+
+    [SerializeField] Animator _animator;
 
     [HideInInspector] public Paladin_State State;
 
@@ -29,10 +32,12 @@ public class Paladin_Delegate : MonoBehaviour
 
     [HideInInspector] public float StateSpeed;
 
+    [SerializeField] float _distance_Attack2 = 1.3f;
+    public float Distance_Attack2 { get { return _distance_Attack2; } }
+
     float _originAngularSpeed;
 
     // Attack 1
-
     [SerializeField] PaladinCheckAttack _checkAttack1;
     public PaladinCheckAttack CheckAttack1 { get { return _checkAttack1; } }
 
@@ -47,12 +52,12 @@ public class Paladin_Delegate : MonoBehaviour
     [SerializeField] ParticleSystem _swordTrails;
     [SerializeField] SphereCastDamage _swordDamage;
 
-
     [Header("Audio")]
     [SerializeField] AudioClip _demoClip;
     [SerializeField] AudioClip _clip;
     [SerializeField] AudioClip _attackClip;
     [SerializeField] AudioSource _source;
+
 
     void Start()
     {
@@ -62,12 +67,38 @@ public class Paladin_Delegate : MonoBehaviour
 
         Event_SwordTrailsStop();
         Event_TurnOfSwordDamage();
+
+        _animator.SetInteger("Attack Type", 2);
     }
 
     void Update()
     {
         
     }
+
+    public void Event_FlashToNearPlayer()
+    {
+        Vector3 playerPos = Player.Instance.transform.position;
+
+        // random position from NavMesh - near Player
+        Vector2 direction2D = Random.insideUnitCircle;
+        Vector3 direction = new Vector3(direction2D.x, 0f, direction2D.y);
+        direction = direction.normalized;
+        Vector3 randomPosition = playerPos + direction * Distance_Attack2; ;
+
+        NavMeshHit hit;
+        NavMesh.SamplePosition(randomPosition, out hit, 10f, 1);
+        _agent.transform.position = hit.position;
+
+        // look player
+        Vector3 vector = playerPos - transform.position;
+        vector.y = 0f;
+        if (vector.magnitude > 0.0001f)
+        {
+            _agent.transform.rotation = Quaternion.LookRotation(vector);
+        }
+    }
+
 
     public void Event_StopMoving_Attack1()
     {
