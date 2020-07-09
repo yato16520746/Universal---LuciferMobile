@@ -18,6 +18,9 @@ public class Paladin_Attack2 : StateMachineBehaviour
             _agent = _delegate.Agent;
         }
 
+        // define direction to appear
+        _delegate.Event_Attack2_DefineDirection();
+
         _delegate.State = Paladin_State.Attack2;
     }
 

@@ -25,6 +25,8 @@ public class Paladin_Attack1 : StateMachineBehaviour
 
         //_delegate.Event_TurnOffAgentRotate();
 
+        _agent.stoppingDistance = 2f;
+
         _delegate.State = Paladin_State.Attack1;
     }
 
@@ -36,7 +38,7 @@ public class Paladin_Attack1 : StateMachineBehaviour
         }
 
         float rotateLerp = _delegate.RotateLerp * Time.deltaTime;
-        
+
         _agent.speed = _delegate.StateSpeed;
 
         if (!_delegate.StopMoving_Attack1)

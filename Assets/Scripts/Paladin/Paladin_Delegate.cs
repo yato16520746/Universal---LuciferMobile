@@ -8,7 +8,9 @@ public enum Paladin_State
     Idle,
     Walk,
     Attack1,
-    Attack2
+    Attack2,
+    Dash,
+    Attack3
 }
 
 public class Paladin_Delegate : MonoBehaviour
@@ -32,12 +34,35 @@ public class Paladin_Delegate : MonoBehaviour
 
     [HideInInspector] public float StateSpeed;
 
+    float _originAngularSpeed;
+
+
+    [Header("Attack 2")]
+
     [SerializeField] float _distance_Attack2 = 1.3f;
     public float Distance_Attack2 { get { return _distance_Attack2; } }
 
-    float _originAngularSpeed;
+    [SerializeField] PaladinAttack2Warning _attack2_warning;
+    public PaladinAttack2Warning Attack2_warning { get { return _attack2_warning; } }
 
-    // Attack 1
+    [HideInInspector] public bool Moving_Attack2;
+
+
+    [Header("Attack 3")]
+
+    [SerializeField] PaladinCheckAttack _checkAttack3;
+    public PaladinCheckAttack CheckAttack3 { get { return _checkAttack3; } }
+
+    [SerializeField] float _attack3_moveSpeed1;
+    public float Attack3_moveSpeed1 { get { return _attack3_moveSpeed1; } }
+
+    [SerializeField] float _attack3_moveSpeed2;
+    public float Attack3_moveSpeed2 { get { return _attack3_moveSpeed2; } }
+
+    [HideInInspector] public int Attack3_MovingType;
+
+    [Header("Attack 1")]
+
     [SerializeField] PaladinCheckAttack _checkAttack1;
     public PaladinCheckAttack CheckAttack1 { get { return _checkAttack1; } }
 
@@ -64,27 +89,65 @@ public class Paladin_Delegate : MonoBehaviour
         _originAngularSpeed = _agent.angularSpeed;
 
         CheckAttack1.gameObject.SetActive(false);
+        CheckAttack3.gameObject.SetActive(false);
 
         Event_SwordTrailsStop();
         Event_TurnOfSwordDamage();
 
-        _animator.SetInteger("Attack Type", 2);
+        _animator.SetInteger("Attack Type", Random.Range(1, 4));
     }
 
     void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.Keypad1))
+        {
+            _animator.SetInteger("Attack Type", 1);
+        }
+        if (Input.GetKeyDown(KeyCode.Keypad2))
+        {
+            _animator.SetInteger("Attack Type", 2);
+        }
+        if (Input.GetKeyDown(KeyCode.Keypad3))
+        {
+            _animator.SetInteger("Attack Type", 3);
+        }
+    }
+
+
+    // Attack 3
+    public void Event_EnableCheckAttack3()
+    {
+        CheckAttack3.gameObject.SetActive(true);
+    }
+
+    public void Event_DisableCheckAttack3()
+    {
+        CheckAttack3.gameObject.SetActive(false);
+    }
+
+    public void Event_setAttack3MovingType(int type)
+    {
+        Attack3_MovingType = type;
+    }
+
+    // Attack 2
+
+    public void Event_Attack2_DefineDirection()
+    {
+        // random position from NavMesh - near Player
+        Vector2 direction2D = Random.insideUnitCircle;
+        Vector3 direction = new Vector3(direction2D.x, 0f, direction2D.y);
+
+        Attack2_warning.gameObject.SetActive(true);
+        Attack2_warning.Direction = direction.normalized;
     }
 
     public void Event_FlashToNearPlayer()
     {
+        // random position from NavMesh - near Player
         Vector3 playerPos = Player.Instance.transform.position;
 
-        // random position from NavMesh - near Player
-        Vector2 direction2D = Random.insideUnitCircle;
-        Vector3 direction = new Vector3(direction2D.x, 0f, direction2D.y);
-        direction = direction.normalized;
-        Vector3 randomPosition = playerPos + direction * Distance_Attack2; ;
+        Vector3 randomPosition = playerPos + Attack2_warning.Direction * Distance_Attack2; ;
 
         NavMeshHit hit;
         NavMesh.SamplePosition(randomPosition, out hit, 10f, 1);
@@ -98,7 +161,6 @@ public class Paladin_Delegate : MonoBehaviour
             _agent.transform.rotation = Quaternion.LookRotation(vector);
         }
     }
-
 
     public void Event_StopMoving_Attack1()
     {
