@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 
 public class Player : MonoBehaviour
-{
+{   
     // singleton
     static Player _instance;
     public static Player Instance { get { return _instance; } }
@@ -52,7 +52,7 @@ public class Player : MonoBehaviour
         if (_instance == null)
         {
             _instance = this;
-            DontDestroyOnLoad(this.gameObject);
+            //DontDestroyOnLoad(this.gameObject);
         }
         else
         {

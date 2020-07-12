@@ -9,8 +9,9 @@ public enum Paladin_State
     Walk,
     Attack1,
     Attack2,
-    Dash,
-    Attack3
+    Attack3,
+    Attack4,
+    Dash
 }
 
 public class Paladin_Delegate : MonoBehaviour
@@ -61,6 +62,12 @@ public class Paladin_Delegate : MonoBehaviour
 
     [HideInInspector] public int Attack3_MovingType;
 
+
+    [Header("Attack 4")]
+    [SerializeField] Transform _circleTransform;
+    [SerializeField] DarknessCircle _darknessCircle;
+
+
     [Header("Attack 1")]
 
     [SerializeField] PaladinCheckAttack _checkAttack1;
@@ -71,16 +78,19 @@ public class Paladin_Delegate : MonoBehaviour
     [SerializeField] float _attack1_MoveSpeed = 20f;
     public float Attack1_MoveSpeed { get { return _attack1_MoveSpeed; } }
 
+
     [Header("Effect")]
     [SerializeField] GameObject _explosion1;
     [SerializeField] GameObject _explosion2;
     [SerializeField] ParticleSystem _swordTrails;
     [SerializeField] SphereCastDamage _swordDamage;
 
+
     [Header("Audio")]
     [SerializeField] AudioClip _demoClip;
     [SerializeField] AudioClip _clip;
     [SerializeField] AudioClip _attackClip;
+    [SerializeField] AudioClip _attack4Clip;
     [SerializeField] AudioSource _source;
 
 
@@ -93,8 +103,6 @@ public class Paladin_Delegate : MonoBehaviour
 
         Event_SwordTrailsStop();
         Event_TurnOfSwordDamage();
-
-        _animator.SetInteger("Attack Type", Random.Range(1, 4));
     }
 
     void Update()
@@ -111,8 +119,22 @@ public class Paladin_Delegate : MonoBehaviour
         {
             _animator.SetInteger("Attack Type", 3);
         }
+        if (Input.GetKeyDown(KeyCode.Keypad4))
+        {
+            _animator.SetInteger("Attack Type", 4);
+        }
     }
 
+    // Attack 4
+    public void Event_ActiveDarknessCircle()
+    {
+        _darknessCircle.StartSpawn(_circleTransform.position, 1f);
+    }
+
+    public void Event_Attack4Audio()
+    {
+        _source.PlayOneShot(_attack4Clip);
+    }
 
     // Attack 3
     public void Event_EnableCheckAttack3()

@@ -19,7 +19,10 @@ public class PlayerHealth : MonoBehaviour
 
     [SerializeField] Player_Delegate _delegate;
     [SerializeField] Animator _animator;
-    bool _allowHitAnimation; 
+    bool _allowHitAnimation;
+
+    [SerializeField] float _timeDelayHit = 0.7f;
+    bool _canGetDamage;
 
     public bool IsDead { get { return (_currentHP <= 0); } }
 
@@ -32,10 +35,25 @@ public class PlayerHealth : MonoBehaviour
 
         _HPSlider.maxValue = _maxHP;
         _HPSlider.value = _currentHP;
+        _canGetDamage = true;
     }
+
+    IEnumerator CanGetDamageAfter(float time)
+    {
+        yield return new WaitForSeconds(time);
+
+        _canGetDamage = true;
+    }
+
+    public bool CanGetDamage { get { return _canGetDamage; } }
 
     public void AddDamage(int amount, Vector3 damagePosition)
     {
+        if (!_canGetDamage)
+        {
+            return;
+        }
+
         if (_currentHP <= 0)
         {
             return;
@@ -47,6 +65,9 @@ public class PlayerHealth : MonoBehaviour
         }
 
         _currentHP += amount;
+
+        _canGetDamage = false;
+        StartCoroutine(CanGetDamageAfter(_timeDelayHit));
 
         if (_currentHP > _maxHP)
         {

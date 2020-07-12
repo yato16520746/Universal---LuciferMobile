@@ -9,6 +9,10 @@ public class Paladin_Idle : StateMachineBehaviour
 
     NavMeshAgent _agent;
 
+    [SerializeField] float _minTime = 0.25f;
+    [SerializeField] float _maxTime = 0.5f;
+    float _count;
+
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         if (!_delegate)
@@ -20,7 +24,20 @@ public class Paladin_Idle : StateMachineBehaviour
 
         _agent.speed = 0;
 
-        animator.SetInteger("Attack Type", Random.Range(1, 4));
+        animator.SetInteger("Attack Type", Random.Range(1, 5));
+
+        if (Random.Range(0, 3) == 0)
+        {
+            _count = Random.Range(_minTime, _maxTime);
+        }
+        else
+        {
+            _count = 100f;
+            animator.SetTrigger("Escape Idle");
+        }
+       
+
+
 
         _delegate.State = Paladin_State.Idle;
     }
@@ -30,6 +47,13 @@ public class Paladin_Idle : StateMachineBehaviour
         if (_delegate.State != Paladin_State.Idle)
         {
             return;
+        }
+
+        _count -= Time.deltaTime;
+        if (_count < 0)
+        {
+            animator.SetTrigger("Escape Idle");
+            _count = 100f;
         }
     }
 }

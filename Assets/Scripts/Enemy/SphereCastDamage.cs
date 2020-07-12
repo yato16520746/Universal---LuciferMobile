@@ -23,8 +23,11 @@ public class SphereCastDamage : MonoBehaviour
             PlayerHealth playerHealth = hit.collider.GetComponent<PlayerHealth>();
             if (playerHealth)
             {
-                playerHealth.AddDamage(-Damage, _owner.position);
-                gameObject.SetActive(false);
+                if (playerHealth.CanGetDamage)
+                {
+                    playerHealth.AddDamage(-Damage, _owner.position);
+                    gameObject.SetActive(false);
+                }
             }
 
         
