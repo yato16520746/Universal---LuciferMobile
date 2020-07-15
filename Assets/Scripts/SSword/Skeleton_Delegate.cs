@@ -42,7 +42,6 @@ public class Skeleton_Delegate : MonoBehaviour
     // bỏ hàm này vào giây cuối cùng của quái
     public void DestroyMe()
     {
-        Destroy(_parent);
-        EnemySpawner.MonsterAmount--;
+        _parent.gameObject.SetActive(false);
     }
 }

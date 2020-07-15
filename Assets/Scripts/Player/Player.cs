@@ -188,4 +188,18 @@ public class Player : MonoBehaviour
     {
         _audioSource.PlayOneShot(_errorClip);
     }
+
+    public void ForceIdle(float time)
+    {
+        _animator.SetBool("Force Idle", true);
+
+        StartCoroutine(StopForceIdleAfter(time));
+    }
+
+    IEnumerator StopForceIdleAfter(float time)
+    {
+        yield return new WaitForSeconds(time);
+
+        _animator.SetBool("Force Idle", false);
+    }
 }

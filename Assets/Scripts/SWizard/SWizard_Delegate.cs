@@ -37,7 +37,8 @@ public class SWizard_Delegate : MonoBehaviour
 
     [SerializeField] Animator _animator;
 
-    [SerializeField] GameObject _meteorPref;
+    [SerializeField] List<GameObject> _meteorPrefs;
+
 
     // game Logic
     Player _player;
@@ -56,22 +57,11 @@ public class SWizard_Delegate : MonoBehaviour
     private void Update()
     {
         // rb
-        _rb.velocity = Vector3.Lerp(_rb.velocity, Vector3.zero, 20f * Time.deltaTime);
     }
 
 
     public void Event_SummonMeteor()
     {
-        Vector3 position = _player.transform.position;
-        Vector3 velocity = _player.RbVelocity;
-        velocity.y = 0f;
-        position += velocity * 0.5f;
-
-        if (_player)
-        {
-            Instantiate(_meteorPref, position, Quaternion.identity);
-        }
-
         _summonCount++;
         if (_summonCount < 2)
         {
@@ -86,5 +76,22 @@ public class SWizard_Delegate : MonoBehaviour
             Mode = SWizard_Mode.RunRandom;
             _summonCount = 0;
         }
+
+        // spawn
+        foreach (GameObject obj in _meteorPrefs)
+        {
+            if (!obj.activeSelf)
+            {
+                obj.SetActive(true);
+                EnemyMeteor meteor = obj.GetComponent<EnemyMeteor>();
+                meteor.AfterSetActive();
+                break;
+            }
+        }
+    }
+
+    void Event_Disable()
+    {
+        _parent.gameObject.SetActive(false);
     }
 }

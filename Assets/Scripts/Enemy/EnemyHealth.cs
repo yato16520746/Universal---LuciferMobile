@@ -11,7 +11,8 @@ public class EnemyHealth : MonoBehaviour
     [SerializeField] int _health = 100;
 
     [Space]
-    [SerializeField] GameObject _parent;
+    [SerializeField] int _defaultMask = 0;
+    [SerializeField] int _enemyHealthMask = 10;
     [SerializeField] string _enemyName;
 
     [Header("On Animation")]
@@ -31,16 +32,6 @@ public class EnemyHealth : MonoBehaviour
         }
     }
 
-#if UNITY_EDITOR
-    private void OnValidate()
-    {
-        // lấy gameobject sở hữu
-        _parent = transform.parent.gameObject;
-
-        _enemyName = _parent.gameObject.name;
-    }
-#endif
-
     private void Start()
     {
         _health = _maxHealth;
@@ -49,6 +40,13 @@ public class EnemyHealth : MonoBehaviour
     private void Update()
     {
   
+    }
+
+    public void FullHealth()
+    {
+        _health = _maxHealth;
+        gameObject.layer = _enemyHealthMask;
+        
     }
 
     public void AddDamage(int amount)
@@ -84,7 +82,7 @@ public class EnemyHealth : MonoBehaviour
    
             _animator.SetInteger("Dead Type", Random.Range(0, _deadTypeCount));
 
-            gameObject.layer = LayerMask.GetMask("Default");     
+            gameObject.layer = _defaultMask;     
         }
     }
 }

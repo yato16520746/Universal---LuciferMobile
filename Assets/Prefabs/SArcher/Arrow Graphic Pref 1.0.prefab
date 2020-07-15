@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 30443824443057809}
   - component: {fileID: 9111153111102780816}
   - component: {fileID: 877671938387444165}
+  - component: {fileID: 1918889295}
   m_Layer: 0
   m_Name: Arrow Graphic Pref 1.0
   m_TagString: Untagged
@@ -48,6 +49,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8654100983a3a6d4f805bd5e14d7b107, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _solidMask:
+    serializedVersion: 2
+    m_Bits: 2304
   _speed: 50
   _delay: 0.04
   _checkPoint: {fileID: 2672967793798813681}
@@ -73,6 +77,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1918889295
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 30443824443057822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54cdbf682dacb8847a52a87eb68ec0e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _time: 4
 --- !u!1 &2672967793798813680
 GameObject:
   m_ObjectHideFlags: 0

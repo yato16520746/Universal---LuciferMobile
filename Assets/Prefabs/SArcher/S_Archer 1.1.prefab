@@ -2302,7 +2302,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 0.35
+  m_Radius: 0.45
   m_Height: 2.1
   m_Direction: 1
   m_Center: {x: 0, y: 1.05, z: 0}
@@ -2319,10 +2319,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _animator: {fileID: 8507898019707529241}
-  _maxHealth: 100
-  _health: 100
-  _parent: {fileID: 8507898020998745958}
-  _enemyName: S_Archer 1.1
+  _maxHealth: 70
+  _health: 70
+  _defaultMask: 0
+  _enemyHealthMask: 10
+  _enemyName: Archer
   _deadTypeCount: 4
   _useDeadTrigger: 1
 --- !u!1 &8507898020919033766
@@ -2416,6 +2417,7 @@ GameObject:
   - component: {fileID: 8507898020708488470}
   - component: {fileID: 8507898020998745956}
   - component: {fileID: 8507898020998745963}
+  - component: {fileID: 1590866401}
   m_Layer: 0
   m_Name: S_Archer 1.1
   m_TagString: Untagged
@@ -2498,6 +2500,20 @@ MonoBehaviour:
   _range: 10
   _canShoot: 0
   _animator: {fileID: 8507898019707529241}
+--- !u!114 &1590866401
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8507898020998745958}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1102f3a6b332bb4fb4252498c09d839, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _mainObject: {fileID: 8507898020998745958}
+  _enemyHealth: {fileID: 8507898020884697999}
 --- !u!1 &8507898021119297364
 GameObject:
   m_ObjectHideFlags: 0

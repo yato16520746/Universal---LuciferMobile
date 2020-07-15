@@ -4,84 +4,100 @@ using UnityEngine;
 
 public class EnemyMeteor : MonoBehaviour
 {
-    [Header("Boom")]
+    enum MeteorState
+    {
+        ChasePlayer,
+        StopMoving
+    }
+
+    //
+    [Header("Boom movement")]
     [SerializeField] Transform _boomTransform;
     [SerializeField] Rigidbody _boomRb;
-    [SerializeField] Animator _boomAnimator;
     [SerializeField] float _speed = 10f;
     [SerializeField] float _height = 10f;
     [SerializeField] float _randomRange = 3f;
-    [SerializeField] float _delay = 0.5f;
-    float _animationSpeed = 0f;
-    float _offset;
-    bool _goDown = false;
     [SerializeField] float _lerpSpeed = 1f;
-    Vector3 _designedVelocity;
+    [SerializeField] float _playerMoveRange = 1f;
+    [SerializeField] float _explodeHeight = 0.5f;
+    Vector3 _originDirection;
+    MeteorState _state;
 
+    //
+    [Header("Boom graphic")]
+    [SerializeField] Animator _boomAnimator;
 
+    //
     [Header("Explosion")]
     [SerializeField] GameObject _explosion;
+    [SerializeField] SphereCastDamage _castDamage;
+
+    //
+    [Header("Audio")]
     [SerializeField] AudioClip _clip;
     [SerializeField] AudioSource _audioSource;
 
-    [SerializeField] float _timeExist;
-
-    void Start()
+    // gọi hàm này sau khi Wizard gọi Meteor active lên
+    public void AfterSetActive()
     {
-        // offset
-        _offset = _boomTransform.position.y - transform.position.y;
-
-        // random position
-        Vector3 boomPosition = transform.position;
-        boomPosition.y += _height;
+        // đưa boom lên trên đầu player
+        Vector3 playerPos = Player.Instance.transform.position;
 
         Vector3 insideSphere = Random.insideUnitSphere;
         insideSphere.y = 0f;
 
-        boomPosition += insideSphere * _randomRange;
-        _boomTransform.position = boomPosition;
+        Vector3 boomPos = playerPos + new Vector3(0f, _height, 0f) + insideSphere * _randomRange;
+        _boomTransform.position = boomPos;
 
+        // hướng di chuyển ban đầu
+        _originDirection = playerPos/* + new Vector3(0f, _explodeHeight * 0.8f, 0f)*/ - boomPos;
+        _originDirection = _originDirection.normalized;
+        _boomRb.velocity = Vector3.zero;
 
-        Vector3 direction = transform.position - boomPosition;
-        _designedVelocity = direction.normalized * _speed;
-
+        //
         _explosion.SetActive(false);
-
-        StartCoroutine(GoDown(_delay));
-        StartCoroutine(Deactive(_timeExist));
+        _state = MeteorState.ChasePlayer;
     }
 
     void Update()
     {
-        if (_goDown && _boomTransform.position.y - transform.position.y <= _offset)
+        if (_state == MeteorState.ChasePlayer)
         {
-            _goDown = false;
-            _boomAnimator.SetTrigger("Disappear");
+            Vector3 playerPos = Player.Instance.transform.position;
+            Vector3 direction = playerPos + new Vector3(0f, _explodeHeight * 0.6f, 0f) - _boomTransform.position;
 
-            _explosion.SetActive(true);
-            _audioSource.PlayOneShot(_clip);
-        }
+            Vector3 velocity = direction.normalized * _speed;
 
-        if (!_goDown)
-        {
-            // explose
-            _boomRb.velocity = Vector3.zero;
-            _animationSpeed = Mathf.Lerp(_animationSpeed, 0f, 5f * Time.deltaTime);
+            _boomRb.velocity = Vector3.Lerp(_boomRb.velocity, velocity, _lerpSpeed * Time.deltaTime);
+
+            if (_boomTransform.position.y < _explodeHeight)
+            {
+                // phát nổ ngay tại đây
+                _state = MeteorState.StopMoving;
+
+                _boomAnimator.SetTrigger("Disappear");
+
+                _explosion.transform.position = _boomTransform.position;
+                _castDamage.gameObject.SetActive(true);
+                _explosion.SetActive(true);
+          
+
+                _audioSource.PlayOneShot(_clip);
+
+                StartCoroutine(TurnOffCastDamage(0.4f));
+                StartCoroutine(Deactive(1f));
+            }
         }
         else
         {
-            _boomRb.velocity = Vector3.Lerp(_boomRb.velocity, _designedVelocity, _lerpSpeed * Time.deltaTime);
-            _animationSpeed = Mathf.Lerp(_animationSpeed, 1f, 5f * Time.deltaTime);
+            _boomRb.velocity = Vector3.zero;
         }
-
-        _boomAnimator.SetFloat("Speed", _animationSpeed);
     }
 
-    IEnumerator GoDown(float waitTime)
+    IEnumerator TurnOffCastDamage(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
-
-        _goDown = true;
+        _castDamage.gameObject.SetActive(false);
     }
 
     IEnumerator Deactive(float waitTime)

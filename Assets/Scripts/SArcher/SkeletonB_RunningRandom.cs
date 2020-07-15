@@ -28,7 +28,8 @@ public class SkeletonB_RunningRandom : StateMachineBehaviour
         {
             randomDirection.z = 1f;
         }
-        Vector3 randomPosition = randomDirection.normalized * distance;
+        Vector3 randomPosition = animator.transform.position
+            + randomDirection.normalized * distance;
 
         NavMeshHit hit;
         NavMesh.SamplePosition(randomPosition, out hit, 10f, 1);
@@ -47,7 +48,9 @@ public class SkeletonB_RunningRandom : StateMachineBehaviour
         {
             if (!_agent.isStopped)
             {
+                
                 _agent.isStopped = true;
+                _agent.ResetPath();
             }
 
             return;

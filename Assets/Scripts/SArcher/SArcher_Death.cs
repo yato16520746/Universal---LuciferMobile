@@ -20,7 +20,7 @@ public class SArcher_Death : StateMachineBehaviour
             _agent = _delegate.NavMeshAgent;
         }
 
-        _collider.gameObject.SetActive(false);
+        //_collider.gameObject.SetActive(false);
         _agent.isStopped = true;
 
         _delegate.State = SArcherState.Death;

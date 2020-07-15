@@ -34,8 +34,6 @@ public class Skeleton : MonoBehaviour
         }
 
         _ray = new Ray();
-
-        EnemySpawner.MonsterAmount++;
     }
 
     private void Update()
@@ -51,7 +49,7 @@ public class Skeleton : MonoBehaviour
         // check player Dead
          _animator.SetBool("Player Dead", PlayerHealth.Instance.IsDead);
 
-        //_rb
+        
     }
 
     // Note: không được gọi hàm này liên tục

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Arrow : MonoBehaviour
 {
+    [SerializeField] LayerMask _solidMask;
     [SerializeField] float _speed = 50;
     [SerializeField] float _delay = 0.1f;
     bool _canFly = false;
@@ -41,10 +42,9 @@ public class Arrow : MonoBehaviour
         ray.direction = _direction;
 
         RaycastHit hit;
-        int mask = LayerMask.GetMask("Player Health");
         float maxDistance = _speed * Time.deltaTime * 2f ;
 
-        if (Physics.Raycast(ray, out hit, maxDistance, mask))
+        if (Physics.Raycast(ray, out hit, maxDistance, _solidMask))
         {
             Debug.Log("Hit");
 

@@ -34,7 +34,9 @@ public class Skeleton_Walk : StateMachineBehaviour
             // chỉ stop nav 1 lần khi đã không còn ở state này
             if (!_agent.isStopped)
             {
+                _agent.ResetPath();
                 _agent.isStopped = true;
+       
             }
 
             return;

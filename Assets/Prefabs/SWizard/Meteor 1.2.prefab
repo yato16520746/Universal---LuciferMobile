@@ -28414,10 +28414,10 @@ MonoBehaviour:
   _boomTransform: {fileID: 4290427040879646130}
   _boomRb: {fileID: 4610684242655513686}
   _boomAnimator: {fileID: 4610684242655513689}
-  _speed: 20
+  _speed: 15
   _height: 7
   _randomRange: 5
-  _delay: 0.01
+  _delay: 0.2
   _lerpSpeed: 5
   _explosion: {fileID: 4527447985626207438}
   _clip: {fileID: 8300000, guid: 75a3468c6e88709488a725535aee0dcc, type: 3}

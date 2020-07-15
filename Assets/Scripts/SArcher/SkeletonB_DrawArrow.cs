@@ -44,7 +44,19 @@ public class SkeletonB_DrawArrow : StateMachineBehaviour
         }
 
 
-        Vector3 vector_2 = Player.Instance.transform.position - animator.transform.position;
+        Vector3 playerRb = Player.Instance.RbVelocity;
+        playerRb.y = 0f;
+        if (playerRb.magnitude < 0.1f)
+        {
+            playerRb = Vector3.zero;
+        }
+        else
+        {
+            playerRb = playerRb.normalized;
+        }
+        Vector3 targetPosition = Player.Instance.transform.position + playerRb * 0.8f;
+
+        Vector3 vector_2 = targetPosition - animator.transform.position;
         vector_2.y = 0f;
         if (vector_2.magnitude < 1.3f)
         {
@@ -56,7 +68,7 @@ public class SkeletonB_DrawArrow : StateMachineBehaviour
         }
 
         // quay người (dựa vào _shootTransform) về phía player
-        Vector3 vector = Player.Instance.transform.position - _shootTransform.position;
+        Vector3 vector = targetPosition - _shootTransform.position;
         vector.y = 0f;
         if (vector.magnitude > 0.1f)
         {

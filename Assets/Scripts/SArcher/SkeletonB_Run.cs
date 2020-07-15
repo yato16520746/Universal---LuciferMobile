@@ -36,6 +36,7 @@ public class SkeletonB_Run : StateMachineBehaviour
             if (!_agent.isStopped)
             {
                 _agent.isStopped = true;
+                _agent.ResetPath();
             }
      
             return;

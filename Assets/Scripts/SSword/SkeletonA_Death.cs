@@ -27,7 +27,7 @@ public class SkeletonA_Death : StateMachineBehaviour
         }
 
         _myDamage.gameObject.SetActive(false);
-        _myCollider.gameObject.SetActive(false);
+        //_myCollider.gameObject.SetActive(false);
         _agent.isStopped = true;
 
         _delegate.State = SkeletonState.Death;

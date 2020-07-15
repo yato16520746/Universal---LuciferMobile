@@ -211,6 +211,8 @@ public class Paladin_Delegate : MonoBehaviour
         _source.PlayOneShot(_clip);
 
         ShakeCamera.Instance.ShouldShake = true;
+
+        LevelManager.Instance.PlayBossFightAudio();
     }
 
     void Event_PlayDemoClip()

@@ -25,9 +25,10 @@ public class Skeleton_Attack : StateMachineBehaviour
         _count = _time;
 
         Vector3 direction = _parent.rotation * Vector3.forward;
-        _rb.velocity = direction * 50f;
+
 
         _rb.isKinematic = false;
+        _rb.velocity = direction * 50f;
 
         _myDamage.gameObject.SetActive(true);
 

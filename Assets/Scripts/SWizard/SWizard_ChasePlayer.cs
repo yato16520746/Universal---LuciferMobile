@@ -39,6 +39,7 @@ public class SWizard_ChasePlayer : StateMachineBehaviour
             if (!_agent.isStopped)
             {
                 _agent.isStopped = true;
+                _agent.ResetPath();
             }
 
             return;
