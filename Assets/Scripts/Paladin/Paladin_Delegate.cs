@@ -11,7 +11,9 @@ public enum Paladin_State
     Attack2,
     Attack3,
     Attack4,
-    Dash
+    Attack5,
+    Dash,
+    Death
 }
 
 public class Paladin_Delegate : MonoBehaviour
@@ -67,6 +69,10 @@ public class Paladin_Delegate : MonoBehaviour
     [SerializeField] Transform _circleTransform;
     [SerializeField] DarknessCircle _darknessCircle;
 
+    //
+    [Header("Attack 5")]
+    [SerializeField] ParticleSystem _handTrails1;
+    [SerializeField] ParticleSystem _handTrails2;
 
     [Header("Attack 1")]
 
@@ -93,7 +99,6 @@ public class Paladin_Delegate : MonoBehaviour
     [SerializeField] AudioClip _attack4Clip;
     [SerializeField] AudioSource _source;
 
-
     void Start()
     {
         _originAngularSpeed = _agent.angularSpeed;
@@ -103,27 +108,23 @@ public class Paladin_Delegate : MonoBehaviour
 
         Event_SwordTrailsStop();
         Event_TurnOfSwordDamage();
+
+        Event_HandTrailsStop();
     }
 
-    void Update()
+    // Attack 5
+    public void Event_HandTrailsStop()
     {
-        if (Input.GetKeyDown(KeyCode.Keypad1))
-        {
-            _animator.SetInteger("Attack Type", 1);
-        }
-        if (Input.GetKeyDown(KeyCode.Keypad2))
-        {
-            _animator.SetInteger("Attack Type", 2);
-        }
-        if (Input.GetKeyDown(KeyCode.Keypad3))
-        {
-            _animator.SetInteger("Attack Type", 3);
-        }
-        if (Input.GetKeyDown(KeyCode.Keypad4))
-        {
-            _animator.SetInteger("Attack Type", 4);
-        }
+        _handTrails1.Stop();
+        _handTrails2.Stop();
     }
+
+    public void Event_HandTrailsPlay()
+    {
+        _handTrails1.Play();
+        _handTrails2.Play();
+    }
+
 
     // Attack 4
     public void Event_ActiveDarknessCircle()
@@ -153,7 +154,6 @@ public class Paladin_Delegate : MonoBehaviour
     }
 
     // Attack 2
-
     public void Event_Attack2_DefineDirection()
     {
         // random position from NavMesh - near Player
@@ -184,11 +184,13 @@ public class Paladin_Delegate : MonoBehaviour
         }
     }
 
+    // Attack 1
     public void Event_StopMoving_Attack1()
     {
         StopMoving_Attack1 = true;
     }
 
+    //
     public void Event_TurnOnAgentRotate()
     {
         _agent.angularSpeed = _originAngularSpeed;

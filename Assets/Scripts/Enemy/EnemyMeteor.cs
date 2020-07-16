@@ -82,7 +82,7 @@ public class EnemyMeteor : MonoBehaviour
                 _explosion.SetActive(true);
           
 
-                _audioSource.PlayOneShot(_clip);
+                _audioSource.PlayOneShot(_clip, 0.3f);
 
                 StartCoroutine(TurnOffCastDamage(0.4f));
                 StartCoroutine(Deactive(1f));

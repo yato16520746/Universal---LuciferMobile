@@ -37,9 +37,16 @@ public class EnemyHealth : MonoBehaviour
         _health = _maxHealth;
     }
 
-    private void Update()
+    public bool IsLessThan(float percent)
     {
-  
+        float realPercent = (float)_health / _maxHealth;
+        
+        if (realPercent < percent)
+        {
+            return true;
+        }
+
+        return false;
     }
 
     public void FullHealth()
@@ -68,7 +75,7 @@ public class EnemyHealth : MonoBehaviour
         // hiện trên canvas
         EnemyHealthCanvas.Instance.set_Value(_health, _maxHealth, _enemyName);
 
-        // chạy animation death
+        // chạy animation death 
         if (_health <= 0)
         {
             if (_useDeadTrigger)
