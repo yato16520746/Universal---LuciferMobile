@@ -25,9 +25,9 @@ public class Paladin_Idle : StateMachineBehaviour
         _agent.speed = 0;
 
         // random attack
-        animator.SetInteger("Attack Type", Random.Range(1, 5));
+        _delegate.Event_Idle_CalculateCombo();
 
-        if (Random.Range(0, 3) == 0)
+        if (_delegate.KeepingIdle)
         {
             _count = Random.Range(_minTime, _maxTime);
         }
@@ -36,8 +36,6 @@ public class Paladin_Idle : StateMachineBehaviour
             _count = 100f;
             animator.SetTrigger("Escape Idle");
         }
-       
-        
 
 
         _delegate.State = Paladin_State.Idle;

@@ -48,6 +48,7 @@ public class SWizard_RunRandom : StateMachineBehaviour
             if (!_agent.isStopped)
             {
                 _agent.isStopped = true;
+                _agent.ResetPath();
             }
 
             return;

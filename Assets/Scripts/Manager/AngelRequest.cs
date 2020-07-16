@@ -47,6 +47,7 @@ public class AngelRequest : MonoBehaviour
                 _canvas.SetActive(false);
                 _triggerCollider.enabled = false;
                 _acceptRequest = true;
+                PlayerHealth.Instance.FullHP();
 
                 // activate enemy spawner
                 LevelManager.Instance.ActivateEnemySpawner(CurrentRound);

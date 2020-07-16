@@ -20,7 +20,7 @@ public class Paladin_Attack5 : StateMachineBehaviour
 
         _agent.speed = 0;
 
-        LevelManager.Instance.CallingSpawnEnemy(EnemyType.Wizard);
+
 
         _delegate.State = Paladin_State.Attack5;
     }

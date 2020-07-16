@@ -45,6 +45,12 @@ public class PlayerHealth : MonoBehaviour
         _canGetDamage = true;
     }
 
+    public void FullHP()
+    {
+        _currentHP = _maxHP;
+        _HPSlider.value = _currentHP;
+    }
+
     public bool CanGetDamage { get { return _canGetDamage; } }
 
     public void AddDamage(int amount, Vector3 damagePosition)

@@ -74,6 +74,7 @@ public class Paladin_Delegate : MonoBehaviour
     [SerializeField] ParticleSystem _handTrails1;
     [SerializeField] ParticleSystem _handTrails2;
 
+    //
     [Header("Attack 1")]
 
     [SerializeField] PaladinCheckAttack _checkAttack1;
@@ -84,7 +85,21 @@ public class Paladin_Delegate : MonoBehaviour
     [SerializeField] float _attack1_MoveSpeed = 20f;
     public float Attack1_MoveSpeed { get { return _attack1_MoveSpeed; } }
 
+    //
+    [Header("Calculate combo")]
+    [SerializeField] EnemyHealth _bossHealth;
+    int _combo;
+    [HideInInspector] public bool KeepingIdle;
+    int _attack1Amount;
+    int _cannotAttack1;
+    int _attack2Amount;
+    int _cannotAttack2;
+    int _cannotAttack3;
+    int _cannotAttack4;
+    float _cannotSummon;
+    [HideInInspector] public GameObject Monster;
 
+    //
     [Header("Effect")]
     [SerializeField] GameObject _explosion1;
     [SerializeField] GameObject _explosion2;
@@ -102,14 +117,148 @@ public class Paladin_Delegate : MonoBehaviour
     void Start()
     {
         _originAngularSpeed = _agent.angularSpeed;
+        _combo = 2;
 
-        CheckAttack1.gameObject.SetActive(false);
+        // ko chạy, vì nó bị disable rồi
+        CheckAttack1.gameObject.SetActive(false); 
         CheckAttack3.gameObject.SetActive(false);
 
         Event_SwordTrailsStop();
         Event_TurnOfSwordDamage();
 
         Event_HandTrailsStop();
+        //
+
+        Monster = null;
+
+        _cannotAttack1 = 0;
+        _cannotAttack2 = 0;
+        _cannotAttack3 = 0;
+        _cannotAttack4 = 0;
+    }
+
+    private void Update()
+    {
+        _cannotSummon -= Time.deltaTime;
+        if (Monster != null && Monster.activeSelf)
+        {
+            _cannotSummon = 7f;
+        }
+    }
+
+    // Idle
+    public void Event_Idle_CalculateCombo()
+    {
+        // rest + reset combo
+        if (_combo == 0)
+        {
+            KeepingIdle = true;
+
+            // HP: 66% - 100%
+            if (!_bossHealth.IsLessThan(0.66f))
+            {
+                _combo = 1;
+            }
+            // HP: 25 % - 66%
+            else if (!_bossHealth.IsLessThan(0.15f))
+            {
+                _combo = Random.Range(2,4);
+            }
+            // HP < 15%
+            else
+            {
+                _combo = 999999;
+            }
+        }
+        else
+        {
+            KeepingIdle = false;
+        }
+
+        _cannotAttack1--;
+        _cannotAttack2--;
+        _cannotAttack3--;
+        _cannotAttack4--;
+
+        if (_attack1Amount >= 2)
+        {
+            _cannotAttack1 = 1;
+        }
+        if (_attack2Amount >= 3)
+        {
+            _cannotAttack2 = 1;
+        }
+
+        // check position Player for attack 3
+        Vector3 distance = Player.Instance.transform.position - transform.position;
+        if (distance.magnitude > 6f)
+        {
+            _cannotAttack3 = 1;
+        }
+
+        List<int> randomList = new List<int>();
+        if (_cannotAttack1 <= 0)
+        {
+            randomList.Add(1); // đi bộ + lao đến chém
+        }
+        if (_cannotAttack2 <= 0)
+        {
+            randomList.Add(2); // tốc biến đến
+        }
+        if (_cannotAttack3 <= 0)
+        {
+            randomList.Add(3); // lộn + 3 chém
+
+        }
+        if (_cannotAttack4 <= 0)
+        {
+            randomList.Add(4); // vòng lửa
+        }
+
+        if (_bossHealth.IsLessThan(0.66f))
+        {
+            if (_cannotSummon <= 0f)
+            {
+                randomList.Add(5);
+            }
+        }
+
+
+        // random attack
+        _combo--;
+        if (randomList.Count == 0)
+        {
+            Debug.LogError("Combo cua Boss bi loi");
+            return;
+        }
+
+        int randomIndex = Random.Range(0, randomList.Count);
+        _animator.SetInteger("Attack Type", randomList[randomIndex]);
+
+        if (randomList[randomIndex] == 1)
+        {
+            _attack1Amount++;
+        }
+        else
+        {
+            _attack1Amount = 0;
+        }
+        if (randomList[randomIndex] == 2)
+        {
+            _attack2Amount++;
+        }
+        else
+        {
+            _attack2Amount = 0;
+        }
+        if (randomList[randomIndex] == 3)
+        {
+            _cannotAttack3 = 1;
+        }
+        if (randomList[randomIndex] == 4)
+        {
+            _cannotAttack4 = 2;
+        }
     }
 
     // Attack 5
@@ -123,6 +272,11 @@ public class Paladin_Delegate : MonoBehaviour
     {
         _handTrails1.Play();
         _handTrails2.Play();
+    }
+
+    void Event_Summon()
+    {
+        Monster = LevelManager.Instance.CallingSpawnEnemy(EnemyType.Wizard);
     }
 
 
