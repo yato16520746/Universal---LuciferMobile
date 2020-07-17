@@ -65,7 +65,7 @@ public class Player : MonoBehaviour
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Confined;
-        Cursor.visible = true;
+        Cursor.visible = false;
 
         //Cursor.SetCursor(_cursorTexture, _hotSpot, cursorMode);
     }

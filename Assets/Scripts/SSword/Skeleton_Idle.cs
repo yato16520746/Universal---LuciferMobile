@@ -11,6 +11,7 @@ public class Skeleton_Idle : StateMachineBehaviour
     float _count;
 
 
+
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         if (!_delegate)

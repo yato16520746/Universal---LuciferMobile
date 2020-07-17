@@ -21,7 +21,7 @@ public class Skeleton_Walk : StateMachineBehaviour
         }
 
         _count = 0f;
-        _agent.isStopped = false;
+        //_agent.isStopped = false;
 
         _delegate.State = SkeletonState.Walk;
     }   
@@ -32,12 +32,12 @@ public class Skeleton_Walk : StateMachineBehaviour
         if (_delegate.State != SkeletonState.Walk)
         {
             // chỉ stop nav 1 lần khi đã không còn ở state này
-            if (!_agent.isStopped)
-            {
+            //if (!_agent.isStopped)
+            //{
                 _agent.ResetPath();
-                _agent.isStopped = true;
+                //_agent.isStopped = true;
        
-            }
+            //}
 
             return;
         }
@@ -49,5 +49,10 @@ public class Skeleton_Walk : StateMachineBehaviour
             _agent.SetDestination(Player.Instance.transform.position);
             _count = _timeSetDestination;
         }
+    }
+
+    public override void OnStateExit(Animator animator, AnimatorStateInfo animatorStateInfo, int layerIndex)
+    {
+        
     }
 }

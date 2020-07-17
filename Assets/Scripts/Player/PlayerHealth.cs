@@ -26,6 +26,8 @@ public class PlayerHealth : MonoBehaviour
 
     public bool IsDead { get { return (_currentHP <= 0); } }
 
+    [Header("UI")]
+    [SerializeField] Animator _UIHitAnimator;
   
     private void Start()
     {
@@ -86,6 +88,7 @@ public class PlayerHealth : MonoBehaviour
 
         _HPSlider.value = _currentHP;
 
+        _UIHitAnimator.SetTrigger("Hit");
 
         // death animation
         if (_currentHP <= 0)

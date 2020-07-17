@@ -39,6 +39,7 @@ public class Skeleton_Attack : StateMachineBehaviour
     {
         if (_delegate.State != SkeletonState.Attack)
         {
+            _rb.velocity = Vector3.zero;
             _rb.isKinematic = true;
 
             _myDamage.gameObject.SetActive(false);

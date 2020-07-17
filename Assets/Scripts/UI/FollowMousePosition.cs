@@ -8,10 +8,11 @@ public class FollowMousePosition : MonoBehaviour
 
     private void Start()
     {
-#if UNITY_EDITOR
-#else
-        Cursor.visible = false;
-#endif
+        //Cursor.visible = false;
+
+//#if UNITY_EDITOR
+//#else
+//#endif
     }
 
     void LateUpdate()
